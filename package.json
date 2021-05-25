@@ -1,0 +1,26 @@
+{
+  "name": "capstone-rest-api-mysql",
+  "version": "1.0.0",
+  "description": "Rest API CRUD Capstone",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "nodemon app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Bayu Irsyad",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1",
+    "mysql": "^2.18.1",
+    "nodemon": "^2.0.7"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dazelpro/nodejs-restapi-mysql.git"
+  },
+  "bugs": {
+    "url": "https://github.com/dazelpro/nodejs-restapi-mysql/issues"
+  },
+  "homepage": "https://github.com/dazelpro/nodejs-restapi-mysql#readme"
+}
