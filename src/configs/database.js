@@ -1,6 +1,6 @@
 module.exports = {
     multipleStatements  : true,
-    host                : '34.101.216.85',
+    host                : 'localhost',
     user                : 'root',
     password            : '',
     database            : 'capstone'
