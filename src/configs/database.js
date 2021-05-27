@@ -1,7 +1,7 @@
 module.exports = {
     multipleStatements  : true,
-    host                : 'b21-cap0192:asia-southeast2:capstone',
+    host                : '34.101.216.85',
     user                : 'root',
     password            : '',
-    database            : 'capstone'
+    database            : 'b21-cap0192:asia-southeast2:capstone'
 };
