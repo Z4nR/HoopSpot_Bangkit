@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">HoopSpot</string>
+    <string name="to_describe_poster_image_of_file">dercribe RV Image</string>
+    <string name="placeName">Place Name</string>
+    <string name="address">Address</string>
+    <string name="status">Status</string>
+    <string name="parkName">Parking Place Name</string>
+</resources>

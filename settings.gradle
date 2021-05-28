@@ -1,0 +1,2 @@
+rootProject.name = "HoopSpot"
+include ':app'
