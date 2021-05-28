@@ -1,5 +1,5 @@
 GOOGLE_PROJECT_ID=b21-cap0192
-CLOUD_RUN_SERVICE=capstone
+CLOUD_RUN_SERVICE=capstone-api
 INSTANCE_CONNECTION_NAME=b21-cap0192:asia-southeast2:capstone
 DB_USER=root
 DB_PASS=
