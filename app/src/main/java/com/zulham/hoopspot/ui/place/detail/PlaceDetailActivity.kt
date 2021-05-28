@@ -1,4 +1,4 @@
-package com.zulham.hoopspot.ui.parking.detail
+package com.zulham.hoopspot.ui.place.detail
 
 import android.os.Bundle
 import android.widget.Toast
@@ -7,42 +7,42 @@ import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.zulham.hoopspot.R
-import com.zulham.hoopspot.data.remote.response.ParkingResponse
-import com.zulham.hoopspot.databinding.ActivityParkingDetailBinding
+import com.zulham.hoopspot.data.remote.response.PlaceResponse
+import com.zulham.hoopspot.databinding.ActivityPlaceDetailBinding
 import com.zulham.hoopspot.viewmodel.ViewModelFactory
 import com.zulham.hoopspot.vo.StatusVo
 
-class ParkingDetailActivity : AppCompatActivity() {
+class PlaceDetailActivity : AppCompatActivity() {
 
-    private lateinit var viewModel: ParkingDetailViewModel
+    private lateinit var viewModel: PlaceDetailViewModel
 
     companion object {
-        const val EXTRA_PARKING = "extra_parking"
+        const val EXTRA_PLACE = "extra_places"
     }
 
-    private lateinit var binding: ActivityParkingDetailBinding
+    private lateinit var binding : ActivityPlaceDetailBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityParkingDetailBinding.inflate(layoutInflater)
+        binding = ActivityPlaceDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         val factory = ViewModelFactory.getInstance(this)
-        viewModel = ViewModelProvider(this,factory)[ParkingDetailViewModel::class.java]
+        viewModel = ViewModelProvider(this,factory)[PlaceDetailViewModel::class.java]
 
         val extras = intent.extras
         if (extras != null) {
-            val parkingId = extras.getParcelable<ParkingResponse>(EXTRA_PARKING)
-            if (parkingId != null) {
-                viewModel.setParkingId(parkingId.id)
+            val placeId = extras.getParcelable<PlaceResponse>(EXTRA_PLACE)
+            if (placeId != null) {
+                viewModel.setPlaceId(placeId.id)
 
-                viewModel.getListParking.observe(this, {parkingById->
-                    if (parkingById !=null){
-                        when(parkingById.status){
+                viewModel.getListPlace.observe(this, {placeById->
+                    if (placeById !=null){
+                        when(placeById.status){
 //                            StatusVo.LOADING -> binding.progressBar.visibility = View.VISIBLE
-                            StatusVo.SUCCESS -> if (parkingById.data != null){
+                            StatusVo.SUCCESS -> if (placeById.data != null){
 //                                binding.progressBar.visibility = View.GONE
-                                getDetailParking(parkingById.data)
+                                getDetailPlace(placeById.data)
                             }
                             StatusVo.ERROR ->{
 //                                binding.progressBar.visibility = View.GONE
@@ -54,7 +54,7 @@ class ParkingDetailActivity : AppCompatActivity() {
             }
         }
     }
-    private fun getDetailParking(parking : ParkingResponse){
+    private fun getDetailPlace(place : PlaceResponse){
         binding.apply {
 //            judul.text = movie.title
 //            tanggal.text = movie.tanggal
@@ -62,10 +62,9 @@ class ParkingDetailActivity : AppCompatActivity() {
         }
 
         Glide.with(this)
-            .load("https://image.tmdb.org/t/p/w600_and_h900_bestv2"+parking.photo)
-            .apply(
-                RequestOptions.placeholderOf(R.drawable.ic_loading)
-                .error(R.drawable.ic_error))
+                .load("https://image.tmdb.org/t/p/w600_and_h900_bestv2"+place.photo)
+                .apply(RequestOptions.placeholderOf(R.drawable.ic_loading)
+                        .error(R.drawable.ic_error))
 //                .into(binding.imagePoster)
     }
 }

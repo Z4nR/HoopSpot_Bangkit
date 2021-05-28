@@ -1,59 +1,59 @@
 package com.zulham.hoopspot.ui.place
 
-import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.paging.PagedList
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.zulham.hoopspot.R
-import com.zulham.hoopspot.data.HoopsEntity
+import com.zulham.hoopspot.data.remote.response.PlaceResponse
 import com.zulham.hoopspot.databinding.ActivityMainBinding
-import com.zulham.hoopspot.ui.parking.main.ParkingActivity
-import com.zulham.hoopspot.ui.parking.main.ParkingActivity.Companion.PLACE
 import com.zulham.hoopspot.ui.place.adapter.PlaceAdapter
+import com.zulham.hoopspot.viewmodel.ViewModelFactory
+import com.zulham.hoopspot.vo.Resource
+import com.zulham.hoopspot.vo.StatusVo
 
 class PlaceActivity : AppCompatActivity() {
 
     private lateinit var bindingPlace : ActivityMainBinding
-
-    private lateinit var placeViewModel: PlaceViewModel
-
+    private lateinit var placeAdapter: PlaceAdapter
     private var backPressed : Long = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
 
         bindingPlace = ActivityMainBinding.inflate(layoutInflater)
         setContentView(bindingPlace.root)
 
-        placeViewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory()).get(PlaceViewModel::class.java)
+        val factory = ViewModelFactory.getInstance(this)
+        val placeViewModel = ViewModelProvider(this, factory)[PlaceViewModel::class.java]
+        placeViewModel.getPlace().observe(this,placeObserver)
 
-        placeViewModel.setData()
 
-        placeViewModel.getData().observe(this, {
-            recyclerV(it)
-        })
+        with(bindingPlace.rvPlace) {
+            placeAdapter = PlaceAdapter()
+            layoutManager = LinearLayoutManager(context)
+            setHasFixedSize(true)
+            adapter = placeAdapter
+        }
 
     }
 
-    private fun recyclerV(hoops: ArrayList<HoopsEntity>) {
-        bindingPlace.rvPlace.apply {
-            val placeAdapter =  PlaceAdapter(hoops)
-            adapter = placeAdapter
-
-            placeAdapter.setOnItemClickCallback(object : PlaceAdapter.OnItemClickCallback{
-                override fun onItemClicked(hoops: HoopsEntity) {
-                    val intent = Intent(context, ParkingActivity::class.java)
-                    intent.putExtra(PLACE, hoops)
-                    startActivity(intent)
+    private val placeObserver = Observer<Resource<PagedList<PlaceResponse>>> { list->
+        if (list != null) {
+            when (list.status) {
+//                StatusVo.LOADING -> bindingPlace.progressBar.visibility = View.VISIBLE
+                StatusVo.SUCCESS -> {
+                    placeAdapter.setPlace(list.data)
+                    placeAdapter.notifyDataSetChanged()
+//                    fragmentMovie.progressBar.visibility = View.GONE
                 }
-
-            })
-
-            setHasFixedSize(true)
-            layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+                StatusVo.ERROR -> {
+//                    fragmentMovie.progressBar.visibility = View.GONE
+                    Toast.makeText(this, "Error", Toast.LENGTH_LONG).show()
+                }
+            }
         }
     }
 
