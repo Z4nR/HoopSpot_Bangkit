@@ -57,7 +57,7 @@ module.exports ={
                     h.place_name,
                     h.place_img,
                     h.place_address,
-                    json_array_agg(
+                    json_arrayagg(
                         json_object(
                             'park_id', p.park_id,
                             'park_name', p.park_name,
