@@ -5,7 +5,7 @@
   "main": "app.js",
   "scripts": {
     "start": "nodemon ./src/app.js",
-    "dev": "nodemon app.js",
+    "dev": "nodemon ./src/app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Bayu Irsyad",
@@ -17,10 +17,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/dazelpro/nodejs-restapi-mysql.git"
+    "url": "https://github.com/Z4nR/HoopSpot_Bangkit/tree/cloud-computing"
   },
-  "bugs": {
-    "url": "https://github.com/dazelpro/nodejs-restapi-mysql/issues"
-  },
-  "homepage": "https://github.com/dazelpro/nodejs-restapi-mysql#readme"
+  "homepage": "https://github.com/Z4nR/HoopSpot_Bangkit/tree/cloud-computing#readme"
 }
