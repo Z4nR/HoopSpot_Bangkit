@@ -21,10 +21,10 @@ train_model = 'train.h5'
 model = tf.keras.models.load_model(train_model)
 spot_available = np.zeros(len(x))
 z = 0
-#a, b, c, d = [],[],[],[],[]
-#for i, box in enumerate(x):
-#    a, b, c, d = box
-#    a, b, c, d = int(a / 2), int(b / 2), int(c / 2), int(d / 2)
+boxes = []
+for i in x:
+   a, b, c, d = x
+   boxes += [int(a / 2), int(b / 2), int(c / 2), int(d / 2)]
 
 def prediction(input_model):
     # print('img', len(img))
@@ -61,9 +61,7 @@ def gen():
             if status:
                 img_crop = []
                 for i, box in enumerate(x):
-                    a, b, c, d = box
-                    a, b, c, d = int(a / 2), int(b / 2), int(c / 2), int(d / 2)
-                    proses1 = img[b:b+d, a:a+c]
+                    proses1 = img[boxes[i][1]:boxes[i][1]+boxes[i][3], boxes[i][0]:boxes[i][0]+boxes[i][2]]
                     proses2 = cv2.resize(proses1, (50,50))/255.0
                     img_crop += [np.expand_dims(proses2, axis=0)]
                     
@@ -72,8 +70,11 @@ def gen():
                 spot_available = prediction(img_crop)
                 status = False
 
-            cv2.rectangle(img, (a, b), (a + c, b + d), (255, 255, 0), 3)
             print('spot avail', spot_available)
+            for i in spot_available:
+                if i == 1:
+                    cv2.rectangle(img, (boxes[i][0], boxes[i][1]), (boxes[i][0] + boxes[i][2], boxes[i][1] + boxes[i][3]), (255, 255, 0), 3)
+
             frame = cv2.imencode('.jpg', img)[1].tobytes()
             # time.sleep(0.0000000000000000000000001)
             yield (b'--frame\r\n'b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
