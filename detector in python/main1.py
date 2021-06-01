@@ -4,7 +4,8 @@ from flask import Flask, render_template, Response
 import tensorflow as tf
 import numpy as np
 
-app = Flask(__name__)
+app = Flask(_name_)
+
 
 @app.route('/')
 def anyname():
@@ -12,7 +13,7 @@ def anyname():
     return render_template('index.html')
 
 
-#video = cv2.VideoCapture('parking lot 1.mp4')
+# video = cv2.VideoCapture('parking lot 1.mp4')
 loc_spot = 'spot.pickle'
 with(open(loc_spot, 'rb')) as loc:
     x = pickle.load(loc)
@@ -23,8 +24,9 @@ spot_available = np.zeros(len(x))
 z = 0
 boxes = []
 for box in x:
-   a, b, c, d = box
-   boxes += [int(a / 2), int(b / 2), int(c / 2), int(d / 2)]
+    a, b, c, d = box
+    boxes += [[int(a / 2), int(b / 2), int(c / 2), int(d / 2)]]
+
 
 def prediction(input_model):
     # print('img', len(img))
@@ -37,6 +39,7 @@ def prediction(input_model):
         generate_id += [np.argmax(predict_model[0])]
     print(len(generate_id))
     return generate_id
+
 
 def gen():
     """Video streaming generator function."""
@@ -61,25 +64,28 @@ def gen():
             if status:
                 img_crop = []
                 for i, box in enumerate(x):
-                    proses1 = img[boxes[i][1]:boxes[i][1]+boxes[i][3], boxes[i][0]:boxes[i][0]+boxes[i][2]]
-                    proses2 = cv2.resize(proses1, (50,50))/255.0
+                    proses1 = img[boxes[i][1]:boxes[i][1] + boxes[i][3], boxes[i][0]:boxes[i][0] + boxes[i][2]]
+                    proses2 = cv2.resize(proses1, (50, 50)) / 255.0
                     img_crop += [np.expand_dims(proses2, axis=0)]
-                    
 
                 print('img crop', len(img_crop))
                 spot_available = prediction(img_crop)
                 status = False
 
             print('spot avail', spot_available)
-            for i in spot_available:
-                if i == 1:
-                    cv2.rectangle(img, (boxes[i][0], boxes[i][1]), (boxes[i][0] + boxes[i][2], boxes[i][1] + boxes[i][3]), (255, 255, 0), 3)
+            for i in range(len(spot_available)):
+                if spot_available[i] == 0:
+                    cv2.rectangle(img, (boxes[i][0], boxes[i][1]),
+                                  (boxes[i][0] + boxes[i][2], boxes[i][1] + boxes[i][3]), (0, 255, 0), 3)
+                cv2.putText(img, str(i), (boxes[i][0]+15, boxes[i][1]+40), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 255), 3)
+            cv2.putText(img, 'available spot: {}'.format(len(spot_available)-sum(spot_available)), (50, 510), cv2.FONT_HERSHEY_PLAIN, 1, (255,0,0), 3)
 
             frame = cv2.imencode('.jpg', img)[1].tobytes()
             # time.sleep(0.0000000000000000000000001)
             yield (b'--frame\r\n'b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
         else:
             break
+
 
 #
 @app.route('/video_feed')
@@ -88,5 +94,6 @@ def video_feed():
     return Response(gen(),
                     mimetype='multipart/x-mixed-replace; boundary=frame')
 
-if __name__ == "__main__":
-    app.run(debug=True, host='192.168.1.138', threaded=True)
+
+#if name == "main":
+#    app.run(debug=True, host='192.168.1.138', threaded=True)
