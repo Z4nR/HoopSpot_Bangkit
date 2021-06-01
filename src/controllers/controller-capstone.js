@@ -1,6 +1,6 @@
 const config = require('../configs/database');
-const mysql = require('mysql');
-const pool = mysql.createPool(config);
+const mysql2 = require('mysql2');
+const pool = mysql2.createPool(config);
 
 pool.on('error',(err)=> {
     console.error(err);
@@ -50,15 +50,65 @@ module.exports ={
         pool.getConnection(function(err, connection) {
             if (err) throw err;
             connection.query(
+                /* Cloud Deploy Code */
                 `
-                SELECT * FROM hoops_entity, parking_area;
+                select
+                    h.place_id,
+                    h.place_name,
+                    h.place_img,
+                    h.place_address,
+                    json_array_agg(
+                        json_object(
+                            'park_id', p.park_id,
+                            'park_name', p.park_name,
+                            'park_img', p.park_img,
+                            'park_address', p.park_address,
+                            'park_status', p.park_status,
+                            'available_park', p.available_park,
+                            'parking_location', p.parking_location,
+                            'parking_space', p.parking_space
+                        )
+                    ) as parking_area
+                from hoops_entity h
+                inner join parking_area p on p.place_id = h.place_id
+                group by h.place_id, h.place_name;
                 `
+                /*select
+                    h.place_id,
+                    h.place_name,
+                    h.place_img,
+                    h.place_address,
+                    concat(
+                        '[',
+                            group_concat(
+                                json_object(
+                                    'park_id', p.park_id,
+                                    'park_name', p.park_name,
+                                    'park_img', p.park_img,
+                                    'park_address', p.park_address,
+                                    'park_status', p.park_status,
+                                    'available_park', p.available_park,
+                                    'parking_location', p.parking_location,
+                                    'parking_space', p.parking_space
+                                )
+                            ),
+                        ']'
+                    ) as parking_area
+                    from hoops_entity h
+                    inner join parking_area p on p.place_id = h.place_id
+                    group by h.place_id, h.place_name;*/
             , function (error, results) {
-                if(error) throw error;  
+                if(error) throw error;
+                /*let ob4 = JSON.parse(results[0].parking_area);
+                delete results[0].parking_area;
+                //results.place_address.push = ob4;
+                results.push(ob4);
+                //console.log(ob4);
+                //console.log(results.splice(results[0].parking_area));*/
                 res.send({ 
                     success: true, 
                     message: 'Berhasil ambil data!',
-                    data: results 
+                    hoops_entity: results
                 });
             });
             connection.release();
