@@ -31,14 +31,19 @@ INSERT INTO `parking_area` (`park_id`, `park_name`, `park_img`, `park_address`, 
 INSERT INTO `parking_area` (`park_id`, `park_name`, `park_img`, `park_address`, `park_status`, `available_park`, `parking_location`, `parking_space`, `place_id`)
  VALUES (NULL, 'Park B', NULL, 'Road 123 Point 2.9', 'Full', '23', 'Maps', 'Image', '1');
 INSERT INTO `parking_area` (`park_id`, `park_name`, `park_img`, `park_address`, `park_status`, `available_park`, `parking_location`, `parking_space`, `place_id`)
- VALUES (NULL, 'Park C', NULL, 'Road 456 Point 3.5', 'Full', '23', 'Maps', 'Image', '1');
+ VALUES (NULL, 'Park C', NULL, 'Road 456 Point 3.5', 'Full', '23', 'Maps', 'Image', '2');
 INSERT INTO `parking_area` (`park_id`, `park_name`, `park_img`, `park_address`, `park_status`, `available_park`, `parking_location`, `parking_space`, `place_id`)
  VALUES (NULL, 'Park C', NULL, 'Road 456 Point 1.5', 'Full', '23', 'Maps', 'Image', '2');
+INSERT INTO `parking_area` (`park_id`, `park_name`, `park_img`, `park_address`, `park_status`, `available_park`, `parking_location`, `parking_space`, `place_id`)
+ VALUES (NULL, 'Park C', NULL, 'Road 789 Point 3.6', 'Full', '23', 'Maps', 'Image', '3');
+INSERT INTO `parking_area` (`park_id`, `park_name`, `park_img`, `park_address`, `park_status`, `available_park`, `parking_location`, `parking_space`, `place_id`)
+ VALUES (NULL, 'Park C', NULL, 'Road 789 Point 1.7', 'Full', '23', 'Maps', 'Image', '3');
 
- INSERT INTO `hoops_entity` (`place_id`, `place_name`, `place_img`, `place_address`)
-  VALUES (NULL, 'Place A', NULL, 'Road 123');
- INSERT INTO `hoops_entity` (`place_id`, `place_name`, `place_img`, `place_address`)
-  VALUES (NULL, 'Place A', NULL, 'Road 456');
+
+INSERT INTO `hoops_entity` (`place_id`, `place_name`, `place_img`, `place_address`)
+ VALUES (NULL, 'Place A', NULL, 'Road 123');
+INSERT INTO `hoops_entity` (`place_id`, `place_name`, `place_img`, `place_address`)
+ VALUES (NULL, 'Place A', NULL, 'Road 456');
 
 /* INSERT INTO `hoops_entity`( --Development Interest
     `place_name` ,
