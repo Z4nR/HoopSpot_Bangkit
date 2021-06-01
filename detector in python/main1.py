@@ -78,7 +78,7 @@ def gen():
                     cv2.rectangle(img, (boxes[i][0], boxes[i][1]),
                                   (boxes[i][0] + boxes[i][2], boxes[i][1] + boxes[i][3]), (0, 255, 0), 3)
                 cv2.putText(img, str(i), (boxes[i][0]+15, boxes[i][1]+40), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 255), 3)
-            cv2.putText(img, 'available spot: {}'.format(len(spot_available)-sum(spot_available)), (50, 510), cv2.FONT_HERSHEY_PLAIN, 1, (255,0,0), 3)
+            cv2.putText(img, 'available spot: {}'.format(len(spot_available)-sum(spot_available)), (50, 510), cv2.FONT_HERSHEY_COMPLEX, 1, (255,0,0), 3)
 
             frame = cv2.imencode('.jpg', img)[1].tobytes()
             # time.sleep(0.0000000000000000000000001)
