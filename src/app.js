@@ -1,11 +1,17 @@
 const express = require("express");
 const mysqll = require("mysql2");
+const appRoute = require('./routes/route-capstone');
 //const dotenv = require("dotenv");
 
 const app = express();
 const port = process.env.PORT || 8080;
 
-/*app.use(express.json());
+app.use('/', appRoute);
+app.listen(port, ()=>{
+    console.log(`Rest API listening on port ${port}`);
+});
+
+/* app.use(express.json()); --Development Interests--
 app.listen(port, () => {
   console.log(`Rest API listening on port ${port}`);
 });
@@ -43,11 +49,4 @@ app.post("/", async (req, res) => {
       res.json({ status: "success", data: data });
     }
   });
-});*/
-
-const appRoute = require('./routes/route-capstone');
-app.use('/', appRoute);
-
-app.listen(port, ()=>{
-    console.log(`Rest API listening on port ${port}`);
-});
+}); */
