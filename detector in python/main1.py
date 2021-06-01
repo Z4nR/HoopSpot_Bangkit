@@ -13,7 +13,7 @@ def anyname():
 
 
 #video = cv2.VideoCapture('parking lot 1.mp4')
-loc_spot = 'spot2.pickle'
+loc_spot = 'spot.pickle'
 with(open(loc_spot, 'rb')) as loc:
     x = pickle.load(loc)
 
@@ -22,8 +22,8 @@ model = tf.keras.models.load_model(train_model)
 spot_available = np.zeros(len(x))
 z = 0
 boxes = []
-for i in x:
-   a, b, c, d = x
+for box in x:
+   a, b, c, d = box
    boxes += [int(a / 2), int(b / 2), int(c / 2), int(d / 2)]
 
 def prediction(input_model):
@@ -42,7 +42,7 @@ def gen():
     """Video streaming generator function."""
     status = None
     global spot_available, z
-    cap = cv2.VideoCapture('parking lot 2.mp4')
+    cap = cv2.VideoCapture('parking lot 3.mp4')
 
     # Read until video is completed
     while (cap.isOpened()):
@@ -88,6 +88,5 @@ def video_feed():
     return Response(gen(),
                     mimetype='multipart/x-mixed-replace; boundary=frame')
 
-#if __name__ == "__main__":
-
-    #app.run(debug=True, host='192.168.1.138', threaded=True)
+if __name__ == "__main__":
+    app.run(debug=True, host='192.168.1.138', threaded=True)
