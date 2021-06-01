@@ -4,8 +4,7 @@ from flask import Flask, render_template, Response
 import tensorflow as tf
 import numpy as np
 
-app = Flask(_name_)
-
+app = Flask(__name__)
 
 @app.route('/')
 def anyname():
@@ -14,6 +13,7 @@ def anyname():
 
 
 # video = cv2.VideoCapture('parking lot 1.mp4')
+cap = cv2.VideoCapture('parking lot 3.mp4')
 loc_spot = 'spot.pickle'
 with(open(loc_spot, 'rb')) as loc:
     x = pickle.load(loc)
@@ -44,8 +44,7 @@ def prediction(input_model):
 def gen():
     """Video streaming generator function."""
     status = None
-    global spot_available, z
-    cap = cv2.VideoCapture('parking lot 3.mp4')
+    global spot_available, z, cap
 
     # Read until video is completed
     while (cap.isOpened()):
@@ -53,12 +52,15 @@ def gen():
         ret, img = cap.read()
         # print(type(ret), 't', type(img))
         # print(type(img), np.shape(img))
+        if not ret:
+            cap = cv2.VideoCapture('parking lot 3.mp4')
+            continue
         if ret:
             img = cv2.resize(img, (0, 0), fx=0.5, fy=0.5)
             # print(type(img), np.shape(img))
             z += 1
             print(z)
-            if z % 10 == 0:
+            if z % 15 == 0:
                 status = True
 
             if status:
@@ -78,7 +80,7 @@ def gen():
                     cv2.rectangle(img, (boxes[i][0], boxes[i][1]),
                                   (boxes[i][0] + boxes[i][2], boxes[i][1] + boxes[i][3]), (0, 255, 0), 3)
                 cv2.putText(img, str(i), (boxes[i][0]+15, boxes[i][1]+40), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 255), 3)
-            cv2.putText(img, 'available spot: {}'.format(len(spot_available)-sum(spot_available)), (50, 510), cv2.FONT_HERSHEY_COMPLEX, 1, (255,0,0), 3)
+            cv2.putText(img, 'available spot: {}'.format(int(len(spot_available)-sum(spot_available))), (50, 510), cv2.FONT_HERSHEY_COMPLEX, 1, (255,0,0), 3)
 
             frame = cv2.imencode('.jpg', img)[1].tobytes()
             # time.sleep(0.0000000000000000000000001)
