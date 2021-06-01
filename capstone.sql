@@ -25,7 +25,7 @@ CREATE TABLE `parking_area` (
  CONSTRAINT `parking_area_ibfk_1` FOREIGN KEY (`place_id`) REFERENCES `hoops_entity` (`place_id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4;
 
-/*Insert data to table `hoops_entity`*/
+/*Insert data to table `hoops_entity` place_id in parking_area must same in hoops_entity because this table constraint relation*/
 INSERT INTO `parking_area` (`park_id`, `park_name`, `park_img`, `park_address`, `park_status`, `available_park`, `parking_location`, `parking_space`, `place_id`)
  VALUES (NULL, 'park A', NULL, 'Road 123 Point 4.5', 'Empty', '23', 'Maps', 'Image', '1');
 INSERT INTO `parking_area` (`park_id`, `park_name`, `park_img`, `park_address`, `park_status`, `available_park`, `parking_location`, `parking_space`, `place_id`)
