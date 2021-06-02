@@ -81,11 +81,13 @@ def gen():
                 spot_available = prediction(img_crop)
                 status = False
 
-            str_s = [bool(flt) for flt in spot_available]
-            classes = [str(i+1) for i in range(len(spot_available))]
-            conv = convert(classes, str_s)
-            json_obj = json.dumps(conv)
-            print('converted :{}'.format(json_obj))
+            json_obj = []
+            str_s = ['id', 'value']
+            for i in range(len(spot_available)):
+                conv = convert(str_s, [i+1, bool(spot_available[i])])
+                json_obj += [json.dumps(conv)]
+                print(type(json.dumps(conv)))
+            print(json_obj)
 
             print('spot avail', spot_available)
             for i in range(len(spot_available)):
