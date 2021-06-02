@@ -4,7 +4,6 @@ from flask import Flask, render_template, Response
 import tensorflow as tf
 import numpy as np
 import json
-import pyrebase
 
 app = Flask(__name__)
 
