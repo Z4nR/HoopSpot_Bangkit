@@ -44,6 +44,7 @@ def prediction(input_model):
 def gen():
     """Video streaming generator function."""
     status = None
+    paket = []
     global spot_available, z, cap
 
     # Read until video is completed
@@ -72,9 +73,11 @@ def gen():
 
                 print('img crop', len(img_crop))
                 spot_available = prediction(img_crop)
+                paket += [spot_available]
                 status = False
 
             print('spot avail', spot_available)
+            print(paket)
             for i in range(len(spot_available)):
                 if spot_available[i] == 0:
                     cv2.rectangle(img, (boxes[i][0], boxes[i][1]),
