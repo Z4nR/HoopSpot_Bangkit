@@ -13,17 +13,20 @@ def anyname():
     return render_template('index.html')
 
 
-loc_spot = 'spot.pickle'
+z = 0
+spot_available = np.zeros(len(x))
+dir_vid = 'parking lot 2.mp4'
+loc_spot = 'spot space/spot2.pickle'
+
 with(open(loc_spot, 'rb')) as loc:
     x = pickle.load(loc)
-
-train_model = 'train.h5'
-model = tf.keras.models.load_model(train_model)
-spot_available = np.zeros(len(x))
 boxes = []
 for box in x:
     a, b, c, d = box
     boxes += [[int(a / 2), int(b / 2), int(c / 2), int(d / 2)]]
+
+train_model = 'train1.h5'
+model = tf.keras.models.load_model(train_model)
 
 
 def prediction(input_model):
@@ -32,7 +35,6 @@ def prediction(input_model):
     for i in input_model:
         predict_model = model.predict(i)
         generate_id += [np.argmax(predict_model[0])]
-    print(len(generate_id))
 
     return generate_id
 
@@ -45,21 +47,20 @@ def convert(a, b):
 
 def gen():
     """Video streaming generator function."""
-    global spot_available, z
+    global z, spot_available
 
     status = None
-    z = 0
-
-    cap = cv2.VideoCapture('parking lot 3.mp4')
+    cap = cv2.VideoCapture(dir_vid)
     # Read until video is completed
     while cap.isOpened():
         # Capture frame-by-frame
         ret, img = cap.read()
         if not ret:
-            cap = cv2.VideoCapture('parking lot 3.mp4')
+            cap = cv2.VideoCapture(dir_vid)
             continue
         if ret:
             img = cv2.resize(img, (0, 0), fx=0.5, fy=0.5)
+            z += 1
             if z % 10 == 0:
                 status = True
 
@@ -78,7 +79,6 @@ def gen():
             for i in range(len(spot_available)):
                 conv = convert(str_s, [i+1, bool(spot_available[i])])
                 json_obj = json.dumps(conv)
-                print(json_obj)
                 json_objs += [json_obj]
 
             print('spot avail', spot_available)
