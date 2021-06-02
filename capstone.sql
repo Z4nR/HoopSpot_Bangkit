@@ -8,7 +8,7 @@ CREATE TABLE `hoops_entity` (
  `place_img` varchar(50) DEFAULT NULL,
  `place_address` varchar(50) NOT NULL,
  PRIMARY KEY (`place_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE `parking_area` (
  `park_id` int(11) NOT NULL AUTO_INCREMENT,
@@ -23,7 +23,7 @@ CREATE TABLE `parking_area` (
  PRIMARY KEY (`park_id`),
  KEY `place_id` (`place_id`),
  CONSTRAINT `parking_area_ibfk_1` FOREIGN KEY (`place_id`) REFERENCES `hoops_entity` (`place_id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 /*Insert data to table `hoops_entity` place_id in parking_area must same in hoops_entity because this table constraint relation*/
 INSERT INTO `parking_area` (`park_id`, `park_name`, `park_img`, `park_address`, `park_status`, `available_park`, `parking_location`, `parking_space`, `place_id`)
@@ -31,19 +31,21 @@ INSERT INTO `parking_area` (`park_id`, `park_name`, `park_img`, `park_address`, 
 INSERT INTO `parking_area` (`park_id`, `park_name`, `park_img`, `park_address`, `park_status`, `available_park`, `parking_location`, `parking_space`, `place_id`)
  VALUES (NULL, 'Park B', NULL, 'Road 123 Point 2.9', 'Full', '23', 'Maps', 'Image', '1');
 INSERT INTO `parking_area` (`park_id`, `park_name`, `park_img`, `park_address`, `park_status`, `available_park`, `parking_location`, `parking_space`, `place_id`)
- VALUES (NULL, 'Park C', NULL, 'Road 456 Point 3.5', 'Full', '23', 'Maps', 'Image', '2');
+ VALUES (NULL, 'Park A', NULL, 'Road 456 Point 3.5', 'Full', '23', 'Maps', 'Image', '2');
 INSERT INTO `parking_area` (`park_id`, `park_name`, `park_img`, `park_address`, `park_status`, `available_park`, `parking_location`, `parking_space`, `place_id`)
- VALUES (NULL, 'Park C', NULL, 'Road 456 Point 1.5', 'Full', '23', 'Maps', 'Image', '2');
+ VALUES (NULL, 'Park B', NULL, 'Road 456 Point 1.5', 'Full', '23', 'Maps', 'Image', '2');
 INSERT INTO `parking_area` (`park_id`, `park_name`, `park_img`, `park_address`, `park_status`, `available_park`, `parking_location`, `parking_space`, `place_id`)
- VALUES (NULL, 'Park C', NULL, 'Road 789 Point 3.6', 'Full', '23', 'Maps', 'Image', '3');
+ VALUES (NULL, 'Park A', NULL, 'Road 789 Point 3.6', 'Full', '23', 'Maps', 'Image', '3');
 INSERT INTO `parking_area` (`park_id`, `park_name`, `park_img`, `park_address`, `park_status`, `available_park`, `parking_location`, `parking_space`, `place_id`)
- VALUES (NULL, 'Park C', NULL, 'Road 789 Point 1.7', 'Full', '23', 'Maps', 'Image', '3');
+ VALUES (NULL, 'Park B', NULL, 'Road 789 Point 1.7', 'Full', '23', 'Maps', 'Image', '3');
 
 
 INSERT INTO `hoops_entity` (`place_id`, `place_name`, `place_img`, `place_address`)
  VALUES (NULL, 'Place A', NULL, 'Road 123');
 INSERT INTO `hoops_entity` (`place_id`, `place_name`, `place_img`, `place_address`)
- VALUES (NULL, 'Place A', NULL, 'Road 456');
+ VALUES (NULL, 'Place B', NULL, 'Road 456');
+INSERT INTO `hoops_entity` (`place_id`, `place_name`, `place_img`, `place_address`)
+ VALUES (NULL, 'Place C', NULL, 'Road 789');
 
 /* INSERT INTO `hoops_entity`( --Development Interest
     `place_name` ,

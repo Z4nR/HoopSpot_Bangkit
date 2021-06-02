@@ -7,86 +7,7 @@ pool.on('error', (err) => {
 });
 
 module.exports = {
-    /* Ambil semua data */
-    getAll(req, res) {
-        pool.getConnection(function (err, connection) {
-            if (err) throw err;
-            connection.query(`
-                select
-                    h.place_id,
-                    h.place_name,
-                    h.place_img,
-                    h.place_address,
-                    'park_id', p.park_id,
-                    'park_name', p.park_name,
-                    'park_img', p.park_img,
-                    'park_address', p.park_address,
-                    'park_status', p.park_status,
-                    'available_park', p.available_park,
-                    'parking_location', p.parking_location,
-                    'parking_space', p.parking_space
-                from hoops_entity h
-                inner join parking_area p on p.place_id = h.place_id
-                `
-                , function (error, results) {
-                    if (error) throw error;
-                    let data = []
-                    let indexId = 0
-                    let currentIndex = 0
-                    results.map((value, index) => {
-                        if (indexId != value.place_id) {
-                            data[index] = {
-                                'place_id': value.place_id,
-                                'place_name': value.place_name,
-                                'place_img': value.place_img,
-                                'place_address': value.place_address,
-                            }
-                            data[index]['parking_area'] = []
-                            indexId = value.place_id
-                            currentIndex = index
-                        }
-                        data[currentIndex]['parking_area'].push({
-                            'park_id': value.park_id,
-                            'park_name': value.park_name,
-                            'park_img': value.park_img,
-                            'park_address': value.park_address,
-                            'park_status': value.park_status,
-                            'available_park': value.available_park,
-                            'parking_location': value.parking_location,
-                            'parking_space': value.parking_space
-                        })
-                    })
-                    res.send({
-                        success: true,
-                        message: 'Berhasil ambil data!',
-                        hoops_entity: data
-                    });
-                });
-            connection.release();
-        })
-    },
-
-    /* Ambil data hoops_entity */
-    getHoopsEntity(req, res) {
-        pool.getConnection(function (err, connection) {
-            if (err) throw err;
-            connection.query(
-                `
-                SELECT * FROM hoops_entity;
-                `
-                , function (error, results) {
-                    if (error) throw error;
-                    res.send({
-                        success: true,
-                        message: 'Berhasil ambil data!',
-                        data: results
-                    });
-                });
-            connection.release();
-        })
-    },
-
-    /* Ambil data parking_area */
+    // Ambil data parking_area
     getParkingArea(req, res) {
         pool.getConnection(function (err, connection) {
             if (err) throw err;
@@ -105,18 +26,15 @@ module.exports = {
             connection.release();
         })
     },
-
-    /* Ambil data hoops_entity berdasarkan ID */
-    getHoopsEntityID(req, res) {
-        let id = req.params.id;
+    // Ambil data hoops_entity
+    getHoopsEntity(req, res) {
         pool.getConnection(function (err, connection) {
             if (err) throw err;
             connection.query(
                 `
-                SELECT * FROM hoops_entity WHERE place_id = ?;
+                SELECT * FROM hoops_entity;
                 `
-                , [id],
-                function (error, results) {
+                , function (error, results) {
                     if (error) throw error;
                     res.send({
                         success: true,
@@ -127,8 +45,66 @@ module.exports = {
             connection.release();
         })
     },
-
-    /* Ambil data parking_area berdasarkan ID */
+    // Ambil semua data
+    getAll(req, res) {
+        pool.getConnection(function (err, connection) {
+            if (err) throw err;
+            connection.query(`
+                select
+                    h.place_id,
+                    h.place_name,
+                    h.place_img,
+                    h.place_address,
+                    p.park_id,
+                    p.park_name,
+                    p.park_img,
+                    p.park_address,
+                    p.park_status,
+                    p.available_park,
+                    p.parking_location,
+                    p.parking_space
+                from hoops_entity h
+                inner join parking_area p on p.place_id = h.place_id
+                `
+                , function (error, results) {
+                    if (error) throw error;
+                    let data = [];
+                    let currnetPlaceId = 0;
+                    let currentIndex = -1;
+                    results.map((value, index) => {
+                        if (currnetPlaceId != value.place_id) {
+                            currentIndex++
+                            data[currentIndex] = {
+                                'place_id': value.place_id,
+                                'place_name': value.place_name,
+                                'place_img': value.place_img,
+                                'place_address': value.place_address,
+                            }
+                            data[currentIndex]['parking'] = []
+                            currnetPlaceId = value.place_id
+                        }
+                        console.log(data[currentIndex])
+                        data[currentIndex]['parking'].push({
+                            'park_id': value.park_id,
+                            'park_name': value.park_name,
+                            'park_img': value.park_img,
+                            'park_address': value.park_address,
+                            'park_status': value.park_status,
+                            'available_park': value.available_park, /* ambil ML */
+                            'parking_space': value.parking_space, /* json object */
+                            'parking_layout': value.parking_layout /* img = url */
+                        })
+                    })
+                    res.send({
+                        success: true,
+                        message: 'Berhasil ambil data!',
+                        hoops_entity: data
+                    });
+                });
+            connection.release();
+        })
+    },
+    // Ambil data parking_area berdasarkan ID
     getParkingAreaID(req, res) {
         let id = req.params.id;
         pool.getConnection(function (err, connection) {
@@ -149,34 +125,28 @@ module.exports = {
             connection.release();
         })
     },
-
-    /* Simpan data hoops_entity */
-    addHoopsEntity(req, res) {
-        let data = {
-            place_name: req.body.name,
-            place_img: req.body.img,
-            place_address: req.body.address,
-            park_id: req.body.id
-        }
+    // Ambil data hoops_entity berdasarkan ID
+    getHoopsEntityID(req, res) {
+        let id = req.params.id;
         pool.getConnection(function (err, connection) {
             if (err) throw err;
             connection.query(
                 `
-                INSERT INTO hoops_entity SET ?;
+                SELECT * FROM hoops_entity WHERE place_id = ?;
                 `
-                , [data],
+                , [id],
                 function (error, results) {
                     if (error) throw error;
                     res.send({
                         success: true,
-                        message: 'Berhasil tambah data!',
+                        message: 'Berhasil ambil data!',
+                        data: results
                     });
                 });
             connection.release();
         })
     },
-    
-    /* Simpan data parking_area */
+    // Simpan data parking_area
     addParkingArea(req, res) {
         let data = {
             park_name: req.body.name,
@@ -204,35 +174,32 @@ module.exports = {
             connection.release();
         })
     },
-
-    /* Update data hoops_entity */
-    editHoopsEntity(req, res) {
-        let dataEdit = {
+    // Simpan data hoops_entity
+    addHoopsEntity(req, res) {
+        let data = {
             place_name: req.body.name,
             place_img: req.body.img,
             place_address: req.body.address,
             park_id: req.body.id
         }
-        let id = req.params.id;
         pool.getConnection(function (err, connection) {
             if (err) throw err;
             connection.query(
                 `
-                UPDATE hoops_entity SET ? WHERE place_id = ?;
+                INSERT INTO hoops_entity SET ?;
                 `
-                , [dataEdit, id],
+                , [data],
                 function (error, results) {
                     if (error) throw error;
                     res.send({
                         success: true,
-                        message: 'Berhasil edit data!',
+                        message: 'Berhasil tambah data!',
                     });
                 });
             connection.release();
         })
     },
-    
-    /* Update data parking_area */
+    // Update data parking_area
     editParkingArea(req, res) {
         let dataEdit = {
             park_name: req.body.name,
@@ -261,29 +228,33 @@ module.exports = {
             connection.release();
         })
     },
-
-    /* Delete data hoops_entity */
-    deleteHoopsEntityID(req, res) {
+    // Update data hoops_entity
+    editHoopsEntity(req, res) {
+        let dataEdit = {
+            place_name: req.body.name,
+            place_img: req.body.img,
+            place_address: req.body.address,
+            park_id: req.body.id
+        }
         let id = req.params.id;
         pool.getConnection(function (err, connection) {
             if (err) throw err;
             connection.query(
                 `
-                DELETE FROM hoops_entity WHERE place_id = ?;
+                UPDATE hoops_entity SET ? WHERE place_id = ?;
                 `
-                , [id],
+                , [dataEdit, id],
                 function (error, results) {
                     if (error) throw error;
                     res.send({
                         success: true,
-                        message: 'Berhasil hapus data!'
+                        message: 'Berhasil edit data!',
                     });
                 });
             connection.release();
         })
     },
-    
-    /* Delete data parking_area */
+    // Delete data parking_area
     deleteParkingAreaID(req, res) {
         let id = req.params.id;
         pool.getConnection(function (err, connection) {
@@ -303,8 +274,27 @@ module.exports = {
             connection.release();
         })
     },
-    
-    /* Delete all data --Failed--
+    // Delete data hoops_entity
+    deleteHoopsEntityID(req, res) {
+        let id = req.params.id;
+        pool.getConnection(function (err, connection) {
+            if (err) throw err;
+            connection.query(
+                `
+                DELETE FROM hoops_entity WHERE place_id = ?;
+                `
+                , [id],
+                function (error, results) {
+                    if (error) throw error;
+                    res.send({
+                        success: true,
+                        message: 'Berhasil hapus data!'
+                    });
+                });
+            connection.release();
+        })
+    },/*
+    // Delete all data
     deleteAll(req,res){
         pool.getConnection(function(err, connection) {
             if (err) throw err;
