@@ -4,8 +4,9 @@
   </head>
   <body>
     <h1>Streaming </h1>
-    <video width="720" controls>
-      <source src="{{ url_for('video_feed') }}" type="video/mp4">
-    </video>
+    <div class="img" width="1280" height="'720">
+      <img src="{{ url_for('video_feed') }}">
+      <img src="{{ url_for('video_park2') }}">
+    </div>
   </body>
 </html>
