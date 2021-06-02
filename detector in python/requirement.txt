@@ -2,3 +2,6 @@ flask==2.0.1
 tensorflow==2.5.0
 numpy==1.19.5
 cv2==4.5.2.52
+pyrebase
+pickle
+json
