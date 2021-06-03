@@ -17,12 +17,14 @@ if __name__ == "__main__":
     app.run(debug=True, host="0.0.0.0", port=int(os.environ.get("PORT", 8080)))
 
 z = 0
-spot_available = np.zeros(len(x))
 dir_vid = 'parking lot 2.mp4'
 loc_spot = 'spot space/spot2.pickle'
 
 with(open(loc_spot, 'rb')) as loc:
     x = pickle.load(loc)
+
+spot_available = np.zeros(len(x))
+    
 boxes = []
 for box in x:
     a, b, c, d = box
