@@ -12,7 +12,7 @@ RUN pip3 install -r requirement.txt
 # Copy local code to the container image.
 COPY . ./
 
-ENV FLASK_APP=main
+ENV FLASK_APP=main2
 
 # Run the server
 CMD ["python3", "-m" , "flask", "run", "--host=0.0.0.0"]
