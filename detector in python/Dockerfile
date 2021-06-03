@@ -1,4 +1,4 @@
-FROM python:3.7-slim-buster
+FROM python:3.8-slim-buster
 
 # Create an app directory in the docker
 WORKDIR /app
@@ -7,12 +7,12 @@ WORKDIR /app
 COPY requirement.txt ./
 
 # Install requirement dependencies.
-RUN pip install -r requirement.txt
+RUN pip3 install -r requirement.txt
 
 # Copy local code to the container image.
 COPY . ./
 
-ENV APP_HOME=main
+ENV FLASK_APP=main
 
 # Run the server
-CMD exec gunicorn --bind :$PORT --workers 1 --threads 8 --timeout 0 main:app
+CMD ["python3", "-m" , "flask", "run", "--host=0.0.0.0"]
