@@ -6,48 +6,50 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.zulham.hoopspot.R
-import com.zulham.hoopspot.data.remote.response.PlaceResponse
+import com.zulham.hoopspot.data.remote.response.HoopsEntityItem
 import com.zulham.hoopspot.databinding.ListPlaceBinding
 
-class PlaceAdapter : RecyclerView.Adapter<PlaceAdapter.PlaceViewHolder>() {
-    private var placeData = ArrayList<PlaceResponse>()
+class PlaceAdapter(private val hoops: List<HoopsEntityItem>): RecyclerView.Adapter<PlaceAdapter.PlaceViewHolder>() {
 
-    fun setPlace(place: List<PlaceResponse>?) {
-        if (place == null) return
-        this.placeData.clear()
-        this.placeData.addAll(place)
+    private var onItemClickCallback: OnItemClickCallback? = null
+
+    fun setOnItemClickCallback(onItemClickCallback: OnItemClickCallback) {
+        this.onItemClickCallback = onItemClickCallback
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PlaceViewHolder {
-        val placeBinding = ListPlaceBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return PlaceViewHolder(placeBinding)
+    interface OnItemClickCallback {
+        fun onItemClicked(hoops : HoopsEntityItem)
     }
-
-    override fun onBindViewHolder(holder: PlaceViewHolder, position: Int) {
-        val place = placeData[position]
-        holder.bind(place)
-    }
-
-    override fun getItemCount(): Int = placeData.size
 
     inner class PlaceViewHolder(private val binding: ListPlaceBinding) : RecyclerView.ViewHolder(binding.root) {
         private val w = 1000
         private val h = 1000
 
-        fun bind(hoopsView : PlaceResponse){
+        fun bind(hoopsView : HoopsEntityItem){
             Glide.with(binding.root)
-                .load("https://image.tmdb.org/t/p/w600_and_h900_bestv2" + hoopsView.photo)
+                .load(hoopsView.placeImg)
                 .error(R.drawable.ic_launcher_foreground)
                 .apply(RequestOptions().override(w, h))
                 .into(binding.imgPlace)
 
-            binding.tvParkName.text = hoopsView.title
-            binding.tvItemDate.text = hoopsView.rilis
+            binding.tvPlaceName.text = hoopsView.placeName
+            binding.tvItemDate.text = hoopsView.placeAddress
 
-//            itemView.setOnClickListener {
-//                onItemClickCallback?.onItemClicked(hoopsView)
-//            }
+            itemView.setOnClickListener {
+                onItemClickCallback?.onItemClicked(hoopsView)
+            }
         }
 
     }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PlaceViewHolder {
+        val binding = ListPlaceBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return PlaceViewHolder(binding)
+    }
+
+    override fun onBindViewHolder(holder: PlaceViewHolder, position: Int) {
+        holder.bind(hoops[position])
+    }
+
+    override fun getItemCount(): Int = hoops.size
 }

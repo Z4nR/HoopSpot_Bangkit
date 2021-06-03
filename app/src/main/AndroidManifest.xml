@@ -11,8 +11,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.HoopSpot">
-        <activity android:name=".ui.place.detail.PlaceDetailActivity"/>
-        <activity android:name=".ui.parking.detail.ParkingDetailActivity" />
+        <activity android:name=".ui.parking.main.ParkingActivity"
+            android:parentActivityName=".ui.place.PlaceActivity"/>
+        <activity android:name=".ui.parking.detail.ParkingDetailActivity"
+            android:parentActivityName=".ui.parking.main.ParkingActivity"/>
         <activity android:name=".ui.place.PlaceActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

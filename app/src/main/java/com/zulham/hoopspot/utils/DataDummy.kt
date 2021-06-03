@@ -2,7 +2,7 @@ package com.zulham.hoopspot.utils
 
 import com.zulham.hoopspot.data.HoopsEntity
 import com.zulham.hoopspot.data.ParkingArea
-import com.zulham.hoopspot.data.ParkingDetail
+import com.zulham.hoopspot.data.ParkingArray
 
 object DataDummy {
 
@@ -20,10 +20,11 @@ object DataDummy {
                 "park A",
                 null,
                 "Road 123 Point 4.5",
-                "Empty",
-                listOf(ParkingDetail(
-                    "Maps",
-                    "Image"
+                23,
+                "Maps",
+                listOf(ParkingArray(
+                    1,
+                    true
                 ))
             ),
             ParkingArea(
@@ -31,10 +32,11 @@ object DataDummy {
                 "park B",
                 null,
                 "Road 123 Point 2.9",
-                "Full",
-                listOf(ParkingDetail(
-                    "Maps",
-                    "Image"
+                23,
+                "Maps",
+                listOf(ParkingArray(
+                    1,
+                    false
                 ))
             ))
         )
@@ -49,10 +51,11 @@ object DataDummy {
                 "park A",
                 null,
                 "Road ABC Point W.Y",
-                "Busy",
-                listOf(ParkingDetail(
-                    "Maps",
-                    "Image"
+                23,
+                "Maps",
+                listOf(ParkingArray(
+                    1,
+                    true
                 ))
             ),
                 ParkingArea(
@@ -60,12 +63,15 @@ object DataDummy {
                     "park B",
                     null,
                     "Road ABC Point X.T",
-                    "Full",
-                    listOf(ParkingDetail(
-                        "Maps",
-                        "Image"
+                    23,
+                    "Maps",
+                    listOf(ParkingArray(
+                        1,
+                        false
                     ))
-                )) )
+                )
+            )
+        )
 
         return place
 

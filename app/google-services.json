@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "838300320197",
+    "firebase_url": "https://b21-cap0192-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "b21-cap0192",
+    "storage_bucket": "b21-cap0192.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:838300320197:android:a90d53f17863c739584bac",
+        "android_client_info": {
+          "package_name": "com.zulham.hoopspot"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "838300320197-6nl58fen4h8fhsc1o4j7glvk4juklk8p.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDNp99im4G4_y7qDm7C8L4EInngRpCcOVM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "838300320197-6nl58fen4h8fhsc1o4j7glvk4juklk8p.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -18,12 +18,13 @@ data class ParkingArea (
     val parkName : String? = null,
     val parkImg : String? = null,
     val parkAddress : String? = null,
-    val parkStatus : String? = null,
-    val parkDetail : List<ParkingDetail>? = null
+    val availablePark : Int? = null,
+    val parkingLocation : String? = null,
+    val parkingSpace : List<ParkingArray>? = null
 ) : Parcelable
 
 @Parcelize
-data class ParkingDetail (
-    val parkingLocation : String? = null,
-    val parkingSpace : String? = null
+data class ParkingArray (
+    val arrayId : Int? = null,
+    val arrayValue : Boolean? = null
 ) : Parcelable

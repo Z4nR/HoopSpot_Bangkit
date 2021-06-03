@@ -30,7 +30,7 @@
             android:contentDescription="@string/to_describe_poster_image_of_file" />
 
         <TextView
-            android:id="@+id/tv_park_name"
+            android:id="@+id/tv_place_name"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -55,8 +55,8 @@
             android:gravity="start"
             android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/tv_park_name"
-            app:layout_constraintTop_toBottomOf="@+id/tv_park_name"
+            app:layout_constraintStart_toStartOf="@+id/tv_place_name"
+            app:layout_constraintTop_toBottomOf="@+id/tv_place_name"
             tools:text="@string/address" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

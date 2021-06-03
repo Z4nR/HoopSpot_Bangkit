@@ -1,21 +1,20 @@
 package com.zulham.hoopspot.ui.parking.detail
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
-import com.zulham.hoopspot.data.remote.response.ParkingResponse
-import com.zulham.hoopspot.data.source.HoopsRepository
-import com.zulham.hoopspot.vo.Resource
+import com.zulham.hoopspot.data.remote.HoopsRepository
+import com.zulham.hoopspot.data.remote.response.ParkingItem
 
-class ParkingDetailViewModel (private val repository: HoopsRepository) : ViewModel() {
-    private var parkingId = MutableLiveData<String>()
+class ParkingDetailViewModel(private val repository: HoopsRepository): ViewModel() {
 
-    fun setParkingId(parkingId: String) {
-        this.parkingId.value = parkingId
+    private lateinit var detailPark: LiveData<ParkingItem>
+
+    fun setParkingDetail(park_id: Int) {
+        detailPark = repository.getParkDetail(park_id)
     }
 
-    var getListParking: LiveData<Resource<ParkingResponse>> = Transformations.switchMap(parkingId) { mParkingId->
-        repository.getDetailParking(mParkingId)
+    fun getParkingDetail() : LiveData<ParkingItem>{
+        return detailPark
     }
+
 }
