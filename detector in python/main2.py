@@ -12,6 +12,7 @@ def anyname():
     """Video streaming home page."""
     return render_template('index.html')
 
+
 z = 0
 spot_available = np.zeros(len(x))
 dir_vid = 'parking lot 2.mp4'
@@ -100,5 +101,3 @@ def video_feed():
     """Video streaming route. Put this in the src attribute of an img tag."""
     return Response(gen(),
                     mimetype='multipart/x-mixed-replace; boundary=frame')
-
-@app.run(debug=True, host="0.0.0.0", port=int(os.environ.get("PORT", 8080)))
