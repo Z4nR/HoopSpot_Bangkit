@@ -9,8 +9,8 @@ class ParkingDetailViewModel(private val repository: HoopsRepository): ViewModel
 
     private lateinit var detailPark: LiveData<ParkingItem>
 
-    fun setParkingDetail(park_id: Int) {
-        detailPark = repository.getParkDetail(park_id)
+    fun setParkingDetail(park_id: Int, place_id : Int) {
+        detailPark = repository.getParkDetail(park_id, place_id)
     }
 
     fun getParkingDetail() : LiveData<ParkingItem>{

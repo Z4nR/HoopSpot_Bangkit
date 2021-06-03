@@ -40,7 +40,7 @@ class RemoteDataSource private constructor(private val serviceApi: ApiService){
     }
 
     fun getParkList(place_id : Int, callback: LoadListParkCallback){
-        serviceApi.getParkList(place_id).enqueue(object : Callback<List<ParkingItem>> {
+        serviceApi.getPlaceDetail(place_id).enqueue(object : Callback<List<ParkingItem>> {
             override fun onResponse(
                 call: Call<List<ParkingItem>>,
                 response: Response<List<ParkingItem>>
@@ -60,8 +60,8 @@ class RemoteDataSource private constructor(private val serviceApi: ApiService){
         })
     }
 
-    fun getParkDetail(park_id : Int, callback: LoadDetailCallback){
-        serviceApi.getParkDetail(park_id).enqueue(object : Callback<ParkingItem>{
+    fun getParkDetail(park_id : Int, place_id: Int, callback: LoadDetailCallback){
+        serviceApi.getParkDetail(park_id, place_id).enqueue(object : Callback<ParkingItem>{
             override fun onResponse(call: Call<ParkingItem>, response: Response<ParkingItem>) {
                 if (response.isSuccessful){
                     val parkDetail = response.body()

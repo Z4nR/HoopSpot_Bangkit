@@ -36,9 +36,9 @@ class HoopsRepository private constructor(private val remoteDataSource: RemoteDa
         return park
     }
 
-    override fun getParkDetail(park_id: Int): LiveData<ParkingItem> {
+    override fun getParkDetail(park_id: Int, place_id: Int): LiveData<ParkingItem> {
         val detailPark = MutableLiveData<ParkingItem>()
-        remoteDataSource.getParkDetail(park_id, object : RemoteDataSource.LoadDetailCallback{
+        remoteDataSource.getParkDetail(park_id, place_id, object : RemoteDataSource.LoadDetailCallback{
             override fun onDetailReceive(detailItem: ParkingItem) {
                 detailPark.postValue(detailItem)
             }

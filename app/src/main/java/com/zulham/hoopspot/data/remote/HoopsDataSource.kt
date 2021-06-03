@@ -8,6 +8,6 @@ interface HoopsDataSource {
 
     fun getPlaceList(): LiveData<List<HoopsEntityItem>>
     fun getParkList(place_id: Int): LiveData<List<ParkingItem>>
-    fun getParkDetail(park_id: Int): LiveData<ParkingItem>
+    fun getParkDetail(park_id: Int, place_id: Int): LiveData<ParkingItem>
 
 }

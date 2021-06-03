@@ -2,7 +2,6 @@ package com.zulham.hoopspot.ui.parking.main
 
 import android.content.Intent
 import android.os.Bundle
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -11,6 +10,7 @@ import com.zulham.hoopspot.R
 import com.zulham.hoopspot.data.remote.response.ParkingItem
 import com.zulham.hoopspot.databinding.ActivityParkingBinding
 import com.zulham.hoopspot.ui.parking.adapter.ParkingAdapter
+import com.zulham.hoopspot.ui.parking.detail.ParkingDetailActivity
 import com.zulham.hoopspot.ui.parking.detail.ParkingDetailActivity.Companion.EXTRA_PARKING
 import com.zulham.hoopspot.utils.ViewModelFactory
 import kotlinx.coroutines.InternalCoroutinesApi
@@ -47,8 +47,9 @@ class ParkingActivity : AppCompatActivity() {
 
             parkAdapter.setOnItemClickCallback(object : ParkingAdapter.OnItemClickCallback{
                 override fun onItemClicked(hoops: ParkingItem) {
-                    val intent = Intent(context, ParkingActivity::class.java)
+                    val intent = Intent(context, ParkingDetailActivity::class.java)
                     intent.putExtra(EXTRA_PARKING, hoops.parkId)
+                    intent.putExtra(EXTRA_ID, intent.getIntExtra(EXTRA_ID, 0))
                     startActivity(intent)
                 }
 
@@ -56,16 +57,6 @@ class ParkingActivity : AppCompatActivity() {
 
             layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
         }
-    }
-
-    override fun onBackPressed() {
-        if (backPressed + 2000 > System.currentTimeMillis()) {
-            super.onBackPressed()
-            return
-        } else {
-            Toast.makeText(baseContext, "Press again to exit", Toast.LENGTH_SHORT).show()
-        }
-        backPressed = System.currentTimeMillis()
     }
 
     companion object{
