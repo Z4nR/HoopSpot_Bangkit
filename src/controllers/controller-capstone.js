@@ -7,26 +7,61 @@ pool.on('error', (err) => {
 });
 
 module.exports = {
-    // Ambil data parking_area
-    getParkingArea(req, res) {
+    /* Ambil semua data */
+    getAll(req, res) {
         pool.getConnection(function (err, connection) {
             if (err) throw err;
             connection.query(
                 `
-                SELECT * FROM parking_area;
+                select
+                    h.place_id,
+                    h.place_name,
+                    h.place_img,
+                    h.place_address,
+                    p.park_id,
+                    p.park_name,
+                    p.park_img,
+                    p.park_address,
+                    p.park_layout
+                from hoops_entity h
+                inner join parking p on p.place_id = h.place_id
                 `
                 , function (error, results) {
                     if (error) throw error;
+                    let data = [];
+                    let currnetPlaceId = 0;
+                    let currentIndex = -1;
+                    results.map((value, index) => {
+                        if (currnetPlaceId != value.place_id) {
+                            currentIndex++;
+                            data[currentIndex] = {
+                                'place_id': value.place_id,
+                                'place_name': value.place_name,
+                                'place_img': value.place_img,
+                                'place_address': value.place_address
+                            }
+                            data[currentIndex]['parking'] = [];
+                            currnetPlaceId = value.place_id;
+                        }
+                        data[currentIndex]['parking'].push({
+                            'park_id': value.park_id,
+                            'park_name': value.park_name,
+                            'park_img': value.park_img,
+                            'park_address': value.park_address,
+                            'park_layout': value.park_layout /* img = url */
+                        });
+                    });
                     res.send({
                         success: true,
                         message: 'Berhasil ambil data!',
-                        data: results
+                        hoops_entity: data
                     });
                 });
             connection.release();
         })
     },
-    // Ambil data hoops_entity
+
+    /* Ambil data hoops_entity */
     getHoopsEntity(req, res) {
         pool.getConnection(function (err, connection) {
             if (err) throw err;
@@ -39,148 +74,83 @@ module.exports = {
                     res.send({
                         success: true,
                         message: 'Berhasil ambil data!',
-                        data: results
+                        hoops_entity: results
                     });
                 });
             connection.release();
         })
     },
-    // Ambil semua data
-    getAll(req, res) {
-        pool.getConnection(function (err, connection) {
-            if (err) throw err;
-            connection.query(`
-                select
-                    h.place_id,
-                    h.place_name,
-                    h.place_img,
-                    h.place_address,
-                    p.park_id,
-                    p.park_name,
-                    p.park_img,
-                    p.park_address,
-                    p.park_status,
-                    p.available_park,
-                    p.parking_location,
-                    p.parking_space
-                from hoops_entity h
-                inner join parking_area p on p.place_id = h.place_id
-                `
-                , function (error, results) {
-                    if (error) throw error;
-                    let data = [];
-                    let currnetPlaceId = 0;
-                    let currentIndex = -1;
-                    results.map((value, index) => {
-                        if (currnetPlaceId != value.place_id) {
-                            currentIndex++
-                            data[currentIndex] = {
-                                'place_id': value.place_id,
-                                'place_name': value.place_name,
-                                'place_img': value.place_img,
-                                'place_address': value.place_address,
-                            }
-                            data[currentIndex]['parking'] = []
-                            currnetPlaceId = value.place_id
-                        }
-                        console.log(data[currentIndex])
-                        data[currentIndex]['parking'].push({
-                            'park_id': value.park_id,
-                            'park_name': value.park_name,
-                            'park_img': value.park_img,
-                            'park_address': value.park_address,
-                            'park_status': value.park_status,
-                            'available_park': value.available_park, /* ambil ML */
-                            'parking_space': value.parking_space, /* json object */
-                            'parking_layout': value.parking_layout /* img = url */
-                        })
-                    })
-                    res.send({
-                        success: true,
-                        message: 'Berhasil ambil data!',
-                        hoops_entity: data
-                    });
-                });
-            connection.release();
-        })
-    },
-    // Ambil data parking_area berdasarkan ID
-    getParkingAreaID(req, res) {
-        let id = req.params.id;
+    
+    /* Ambil data parking */
+    getParking(req, res) {
         pool.getConnection(function (err, connection) {
             if (err) throw err;
             connection.query(
                 `
-                SELECT * FROM parking_area WHERE park_id = ?;
+                SELECT * FROM parking;
                 `
-                , [id],
-                function (error, results) {
+                , function (error, results) {
                     if (error) throw error;
                     res.send({
                         success: true,
                         message: 'Berhasil ambil data!',
-                        data: results
+                        parking: results
                     });
                 });
             connection.release();
         })
     },
-    // Ambil data hoops_entity berdasarkan ID
+
+    /* Ambil data hoops_entity berdasarkan ID */
     getHoopsEntityID(req, res) {
-        let id = req.params.id;
+        let place_id = req.params.place_id;
         pool.getConnection(function (err, connection) {
             if (err) throw err;
             connection.query(
                 `
                 SELECT * FROM hoops_entity WHERE place_id = ?;
                 `
-                , [id],
+                , [place_id],
                 function (error, results) {
                     if (error) throw error;
                     res.send({
                         success: true,
                         message: 'Berhasil ambil data!',
-                        data: results
+                        hoops_entity: results
                     });
                 });
             connection.release();
         })
     },
-    // Simpan data parking_area
-    addParkingArea(req, res) {
-        let data = {
-            park_name: req.body.name,
-            park_img: req.body.img,
-            park_address: req.body.address,
-            park_status: req.body.status,
-            available_park: req.body.available,
-            parking_location: req.body.location,
-            parking_space: req.body.space
-        }
+
+    /* Ambil data parking berdasarkan ID */
+    getParkingID(req, res) {
+        let park_id = req.params.park_id;
         pool.getConnection(function (err, connection) {
             if (err) throw err;
             connection.query(
                 `
-                INSERT INTO parking_area SET ?;
+                SELECT * FROM parking WHERE park_id = ?;
                 `
-                , [data],
+                , [park_id],
                 function (error, results) {
                     if (error) throw error;
                     res.send({
                         success: true,
-                        message: 'Berhasil tambah data!',
+                        message: 'Berhasil ambil data!',
+                        parking: results
                     });
                 });
             connection.release();
         })
     },
-    // Simpan data hoops_entity
+
+    /* Simpan data hoops_entity */
     addHoopsEntity(req, res) {
-        let data = {
-            place_name: req.body.name,
-            place_img: req.body.img,
-            place_address: req.body.address,
-            park_id: req.body.id
+        let hoops_entity = {
+            place_name: req.body.place_name,
+            place_img: req.body.place_img,
+            place_address: req.body.place_address
         }
         pool.getConnection(function (err, connection) {
             if (err) throw err;
@@ -188,7 +158,7 @@ module.exports = {
                 `
                 INSERT INTO hoops_entity SET ?;
                 `
-                , [data],
+                , [hoops_entity],
                 function (error, results) {
                     if (error) throw error;
                     res.send({
@@ -199,51 +169,48 @@ module.exports = {
             connection.release();
         })
     },
-    // Update data parking_area
-    editParkingArea(req, res) {
-        let dataEdit = {
-            park_name: req.body.name,
-            park_img: req.body.img,
-            park_address: req.body.address,
-            park_status: req.body.status,
-            available_park: req.body.available,
-            parking_location: req.body.location,
-            parking_space: req.body.space
+
+    /* Simpan data parking */
+    addParking(req, res) {
+        let parking = {
+            park_name: req.body.park_name,
+            park_img: req.body.park_img,
+            park_address: req.body.park_address,
+            park_layout: req.body.parking_layout
         }
-        let id = req.params.id;
         pool.getConnection(function (err, connection) {
             if (err) throw err;
             connection.query(
                 `
-                UPDATE parking_area SET ? WHERE park_id = ?;
+                INSERT INTO parking SET ?;
                 `
-                , [dataEdit, id],
+                , [parking],
                 function (error, results) {
                     if (error) throw error;
                     res.send({
                         success: true,
-                        message: 'Berhasil edit data!',
+                        message: 'Berhasil tambah data!',
                     });
                 });
             connection.release();
         })
     },
-    // Update data hoops_entity
+
+    /* Update data hoops_entity */
     editHoopsEntity(req, res) {
-        let dataEdit = {
-            place_name: req.body.name,
-            place_img: req.body.img,
-            place_address: req.body.address,
-            park_id: req.body.id
+        let hoops_entity = {
+            place_name: req.body.place_name,
+            place_img: req.body.place_img,
+            place_address: req.body.place_address
         }
-        let id = req.params.id;
+        let place_id = req.params.place_id;
         pool.getConnection(function (err, connection) {
             if (err) throw err;
             connection.query(
                 `
                 UPDATE hoops_entity SET ? WHERE place_id = ?;
                 `
-                , [dataEdit, id],
+                , [hoops_entity, place_id],
                 function (error, results) {
                     if (error) throw error;
                     res.send({
@@ -254,16 +221,44 @@ module.exports = {
             connection.release();
         })
     },
-    // Delete data parking_area
-    deleteParkingAreaID(req, res) {
-        let id = req.params.id;
+
+    /* Update data parking */
+    editParking(req, res) {
+        let parking = {
+            park_name: req.body.park_name,
+            park_img: req.body.park_img,
+            park_address: req.body.park_address,
+            park_layout: req.body.parking_layout
+        }
+        let park_id = req.params.park_id;
         pool.getConnection(function (err, connection) {
             if (err) throw err;
             connection.query(
                 `
-                DELETE FROM parking_area WHERE park_id = ?;
+                UPDATE parking SET ? WHERE park_id = ?;
                 `
-                , [id],
+                , [parking, park_id],
+                function (error, results) {
+                    if (error) throw error;
+                    res.send({
+                        success: true,
+                        message: 'Berhasil edit data!',
+                    });
+                });
+            connection.release();
+        })
+    },
+
+    /* Delete data hoops_entity */
+    deleteHoopsEntityID(req, res) {
+        let place_id = req.params.place_id;
+        pool.getConnection(function (err, connection) {
+            if (err) throw err;
+            connection.query(
+                `
+                DELETE FROM hoops_entity WHERE place_id = ?;
+                `
+                , [place_id],
                 function (error, results) {
                     if (error) throw error;
                     res.send({
@@ -274,16 +269,17 @@ module.exports = {
             connection.release();
         })
     },
-    // Delete data hoops_entity
-    deleteHoopsEntityID(req, res) {
-        let id = req.params.id;
+
+    /* Delete data parking */
+    deleteParkingID(req, res) {
+        let park_id = req.params.park_id;
         pool.getConnection(function (err, connection) {
             if (err) throw err;
             connection.query(
                 `
-                DELETE FROM hoops_entity WHERE place_id = ?;
+                DELETE FROM parking WHERE park_id = ?;
                 `
-                , [id],
+                , [park_id],
                 function (error, results) {
                     if (error) throw error;
                     res.send({
@@ -293,14 +289,15 @@ module.exports = {
                 });
             connection.release();
         })
-    },/*
-    // Delete all data
+    },
+    
+    /* // Delete all data --Development Interest
     deleteAll(req,res){
         pool.getConnection(function(err, connection) {
             if (err) throw err;
             connection.query(
                 `
-                DELETE  FROM 'hoops_entity', 'parking_area', 'hoops_entity';
+                DELETE  FROM 'hoops_entity', 'parking';
                 `
             ,
             function (error, results) {
@@ -312,5 +309,5 @@ module.exports = {
             });
             connection.release();
         })
-    }*/
+    } */
 }
