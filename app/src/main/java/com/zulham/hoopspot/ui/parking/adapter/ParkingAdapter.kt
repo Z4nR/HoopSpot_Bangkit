@@ -9,7 +9,7 @@ import com.zulham.hoopspot.R
 import com.zulham.hoopspot.data.remote.response.ParkingItem
 import com.zulham.hoopspot.databinding.ListParkingBinding
 
-class ParkingAdapter(private val hoops: List<ParkingItem>?): RecyclerView.Adapter<ParkingAdapter.PlaceViewHolder>() {
+class ParkingAdapter(private val hoops: List<ParkingItem>): RecyclerView.Adapter<ParkingAdapter.PlaceViewHolder>() {
 
     private var onItemClickCallback: OnItemClickCallback? = null
 
@@ -48,8 +48,8 @@ class ParkingAdapter(private val hoops: List<ParkingItem>?): RecyclerView.Adapte
     }
 
     override fun onBindViewHolder(holder: PlaceViewHolder, position: Int) {
-        hoops?.get(position)?.let { holder.bind(it) }
+        hoops.get(position).let { holder.bind(it) }
     }
 
-    override fun getItemCount(): Int = hoops?.size!!
+    override fun getItemCount(): Int = hoops.size
 }

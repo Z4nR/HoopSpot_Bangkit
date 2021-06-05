@@ -9,7 +9,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 class ApiConfig {
 
     companion object{
-        private const val BASE_URL = "https://capstone-api-ptzf4vjc4a-et.a.run.app"
+        private const val BASE_URL = "https://capstone-api-mysql-ptzf4vjc4a-et.a.run.app"
 
         private val loggingInterceptor =
             HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)

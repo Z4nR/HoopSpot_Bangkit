@@ -19,7 +19,6 @@ import kotlinx.coroutines.InternalCoroutinesApi
 class ParkingActivity : AppCompatActivity() {
 
     private lateinit var bindingParking : ActivityParkingBinding
-    private var backPressed : Long = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

@@ -6,4 +6,9 @@
     <string name="status">Status</string>
     <string name="parkName">Parking Name</string>
     <string name="park_address">park address</string>
+    <string name="placeBoard">Place     :</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="sloganApp">Helping you to find parking spot</string>
+    <string name="appTitle">HoopSpot</string>
 </resources>

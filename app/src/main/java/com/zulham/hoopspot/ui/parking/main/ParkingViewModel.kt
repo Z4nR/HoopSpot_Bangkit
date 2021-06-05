@@ -1,5 +1,6 @@
 package com.zulham.hoopspot.ui.parking.main
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import com.zulham.hoopspot.data.remote.HoopsRepository
@@ -14,6 +15,7 @@ class ParkingViewModel(private val repository: HoopsRepository) : ViewModel() {
     }
 
     fun getParkList(): LiveData<List<ParkingItem>> {
+        Log.d("testing", detailPlace.value.toString())
         return detailPlace
     }
 
