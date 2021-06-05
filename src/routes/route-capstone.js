@@ -11,8 +11,8 @@ router.get('/parking', capstone.getParking);
 
 /* GET localhost:8080/capstone/? => Ambil data hoops_entity berdasarkan place_id = ? */
 router.get('/hoops_entity/:place_id', capstone.getHoopsEntityID);
-/* GET localhost:8080/capstone/? => Ambil data parking berdasarkan place_id = ? */
-router.get('/parking/:place_id', capstone.getParkingID);
+/* GET localhost:8080/capstone/? => Ambil data parking berdasarkan park_id = ? */
+router.get('/parking/:park_id', capstone.getParkingID);
 
 /* POST localhost:8080/capstone/add => Tambah data hoops_entity */
 router.post('/hoops_entity/add', capstone.addHoopsEntity);

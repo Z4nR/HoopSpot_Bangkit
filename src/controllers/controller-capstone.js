@@ -24,7 +24,7 @@ module.exports = {
                     p.park_address,
                     p.park_layout
                 from hoops_entity h
-                inner join parking p on p.place_id = h.place_id
+                inner join parking p on p.place_id = h.place_id;
                 `
                 , function (error, results) {
                     if (error) throw error;
@@ -108,15 +108,50 @@ module.exports = {
             if (err) throw err;
             connection.query(
                 `
-                SELECT * FROM hoops_entity WHERE place_id = ?;
+                select
+                    h.place_id,
+                    h.place_name,
+                    h.place_img,
+                    h.place_address,
+                    p.park_id,
+                    p.park_name,
+                    p.park_img,
+                    p.park_address,
+                    p.park_layout
+                from hoops_entity h
+                inner join parking p on p.place_id = h.place_id
+                where h.place_id = ?;
                 `
                 , [place_id],
                 function (error, results) {
                     if (error) throw error;
+                    let data = [];
+                    let currnetPlaceId = 0;
+                    let currentIndex = -1;
+                    results.map((value, index) => {
+                        if (currnetPlaceId != value.place_id) {
+                            currentIndex++;
+                            data[currentIndex] = {
+                                'place_id': value.place_id,
+                                'place_name': value.place_name,
+                                'place_img': value.place_img,
+                                'place_address': value.place_address
+                            }
+                            data[currentIndex]['parking'] = [];
+                            currnetPlaceId = value.place_id;
+                        }
+                        data[currentIndex]['parking'].push({
+                            'park_id': value.park_id,
+                            'park_name': value.park_name,
+                            'park_img': value.park_img,
+                            'park_address': value.park_address,
+                            'park_layout': value.park_layout /* img = url */
+                        });
+                    });
                     res.send({
                         success: true,
                         message: 'Berhasil ambil data!',
-                        hoops_entity: results
+                        hoops_entity: data
                     });
                 });
             connection.release();
