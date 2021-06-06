@@ -13,6 +13,21 @@ data class HoopsResponse(
 ) : Parcelable
 
 @Parcelize
+data class HoopsDetailResponse(
+
+	@field:SerializedName("hoops_entity")
+	val hoopsEntity: List<HoopsEntityItem>? = null
+
+) : Parcelable
+
+@Parcelize
+data class ParkingResponse(
+
+	@field:SerializedName("hoops_entity")
+	val hoopsEntity: List<HoopsEntityItem> = arrayListOf()
+) : Parcelable
+
+@Parcelize
 data class HoopsEntityItem(
 
 	@field:SerializedName("parking")

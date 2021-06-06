@@ -1,9 +1,10 @@
 package com.zulham.hoopspot.data.remote
 
 import com.zulham.hoopspot.api.ApiService
+import com.zulham.hoopspot.data.remote.response.HoopsDetailResponse
 import com.zulham.hoopspot.data.remote.response.HoopsEntityItem
 import com.zulham.hoopspot.data.remote.response.HoopsResponse
-import com.zulham.hoopspot.data.remote.response.ParkingItem
+import com.zulham.hoopspot.data.remote.response.ParkingResponse
 import kotlinx.coroutines.InternalCoroutinesApi
 import retrofit2.Call
 import retrofit2.Callback
@@ -40,29 +41,29 @@ class RemoteDataSource private constructor(private val serviceApi: ApiService){
     }
 
     fun getParkList(place_id : Int, callback: LoadListParkCallback){
-        serviceApi.getPlaceDetail(place_id).enqueue(object : Callback<List<ParkingItem>> {
+        serviceApi.getPlaceDetail(place_id).enqueue(object : Callback<HoopsDetailResponse> {
             override fun onResponse(
-                call: Call<List<ParkingItem>>,
-                response: Response<List<ParkingItem>>
+                call: Call<HoopsDetailResponse>,
+                response: Response<HoopsDetailResponse>
             ) {
                 if (response.isSuccessful){
-                    val park = response.body()
+                    val park = response.body()?.hoopsEntity
                     if (park != null) {
                         callback.onAllListParkReceive(park)
                     }
                 }
             }
 
-            override fun onFailure(call: Call<List<ParkingItem>>, t: Throwable) {
+            override fun onFailure(call: Call<HoopsDetailResponse>, t: Throwable) {
 
             }
 
         })
     }
 
-    fun getParkDetail(park_id : Int, place_id: Int, callback: LoadDetailCallback){
-        serviceApi.getParkDetail(park_id, place_id).enqueue(object : Callback<ParkingItem>{
-            override fun onResponse(call: Call<ParkingItem>, response: Response<ParkingItem>) {
+    fun getParkDetail(place_id: Int, park_id: Int, callback: LoadDetailCallback){
+        serviceApi.getParkDetail(place_id, park_id).enqueue(object : Callback<ParkingResponse>{
+            override fun onResponse(call: Call<ParkingResponse>, response: Response<ParkingResponse>) {
                 if (response.isSuccessful){
                     val parkDetail = response.body()
                     if (parkDetail != null) {
@@ -71,7 +72,7 @@ class RemoteDataSource private constructor(private val serviceApi: ApiService){
                 }
             }
 
-            override fun onFailure(call: Call<ParkingItem>, t: Throwable) {
+            override fun onFailure(call: Call<ParkingResponse>, t: Throwable) {
 
             }
 
@@ -83,11 +84,11 @@ class RemoteDataSource private constructor(private val serviceApi: ApiService){
     }
 
     interface LoadListParkCallback {
-        fun onAllListParkReceive(resultsItem: List<ParkingItem>)
+        fun onAllListParkReceive(resultsItem: List<HoopsEntityItem>)
     }
 
     interface LoadDetailCallback {
-        fun onDetailReceive(detailItem: ParkingItem)
+        fun onDetailReceive(detailItem: ParkingResponse)
     }
 
 }

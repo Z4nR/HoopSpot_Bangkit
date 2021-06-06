@@ -7,16 +7,20 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.zulham.hoopspot.R
+import com.zulham.hoopspot.data.remote.response.HoopsEntityItem
 import com.zulham.hoopspot.data.remote.response.ParkingItem
 import com.zulham.hoopspot.databinding.ActivityParkingBinding
 import com.zulham.hoopspot.ui.parking.adapter.ParkingAdapter
 import com.zulham.hoopspot.ui.parking.detail.ParkingDetailActivity
+import com.zulham.hoopspot.ui.parking.detail.ParkingDetailActivity.Companion.EXTRA_ID
 import com.zulham.hoopspot.ui.parking.detail.ParkingDetailActivity.Companion.EXTRA_PARKING
 import com.zulham.hoopspot.utils.ViewModelFactory
 import kotlinx.coroutines.InternalCoroutinesApi
 
 @InternalCoroutinesApi
 class ParkingActivity : AppCompatActivity() {
+
+    private lateinit var detailPlace : HoopsEntityItem
 
     private lateinit var bindingParking : ActivityParkingBinding
 
@@ -26,14 +30,14 @@ class ParkingActivity : AppCompatActivity() {
         bindingParking = ActivityParkingBinding.inflate(layoutInflater)
         setContentView(bindingParking.root)
 
-        val detailPlace = intent.getIntExtra(EXTRA_ID, 0)
+        detailPlace = intent.getParcelableExtra<HoopsEntityItem>(EXTRA_DATA)!!
 
         val factory = ViewModelFactory.getInstance(this)
         val parkingViewModel = ViewModelProvider(this, factory)[ParkingViewModel::class.java]
 
-        parkingViewModel.setPlaceDetail(detailPlace)
+        detailPlace.let{ parkingViewModel.setPlaceDetail(it.placeId!!) }
         parkingViewModel.getParkList().observe(this, {
-            recyclerV(it)
+            recyclerV(it[0].parking!!)
         })
 
     }
@@ -48,7 +52,7 @@ class ParkingActivity : AppCompatActivity() {
                 override fun onItemClicked(hoops: ParkingItem) {
                     val intent = Intent(context, ParkingDetailActivity::class.java)
                     intent.putExtra(EXTRA_PARKING, hoops.parkId)
-                    intent.putExtra(EXTRA_ID, intent.getIntExtra(EXTRA_ID, 0))
+                    intent.putExtra(EXTRA_ID, detailPlace.placeId)
                     startActivity(intent)
                 }
 
@@ -59,7 +63,7 @@ class ParkingActivity : AppCompatActivity() {
     }
 
     companion object{
-        const val EXTRA_ID = "extra_id"
+        const val EXTRA_DATA = "extra_data"
     }
 
 }

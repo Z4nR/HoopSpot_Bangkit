@@ -3,7 +3,7 @@ package com.zulham.hoopspot.data.remote
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.zulham.hoopspot.data.remote.response.HoopsEntityItem
-import com.zulham.hoopspot.data.remote.response.ParkingItem
+import com.zulham.hoopspot.data.remote.response.ParkingResponse
 
 class HoopsRepository private constructor(private val remoteDataSource: RemoteDataSource): HoopsDataSource{
 
@@ -26,20 +26,20 @@ class HoopsRepository private constructor(private val remoteDataSource: RemoteDa
         return place
     }
 
-    override fun getParkList(place_id: Int): LiveData<List<ParkingItem>> {
-        val park = MutableLiveData<List<ParkingItem>>()
+    override fun getParkList(place_id: Int): LiveData<List<HoopsEntityItem>> {
+        val park = MutableLiveData<List<HoopsEntityItem>>()
         remoteDataSource.getParkList(place_id, object : RemoteDataSource.LoadListParkCallback{
-            override fun onAllListParkReceive(resultsItem: List<ParkingItem>) {
+            override fun onAllListParkReceive(resultsItem: List<HoopsEntityItem>) {
                 park.postValue(resultsItem)
             }
         })
         return park
     }
 
-    override fun getParkDetail(park_id: Int, place_id: Int): LiveData<ParkingItem> {
-        val detailPark = MutableLiveData<ParkingItem>()
-        remoteDataSource.getParkDetail(park_id, place_id, object : RemoteDataSource.LoadDetailCallback{
-            override fun onDetailReceive(detailItem: ParkingItem) {
+    override fun getParkDetail(place_id: Int, park_id: Int): LiveData<ParkingResponse> {
+        val detailPark = MutableLiveData<ParkingResponse>()
+        remoteDataSource.getParkDetail(place_id, park_id, object : RemoteDataSource.LoadDetailCallback{
+            override fun onDetailReceive(detailItem: ParkingResponse) {
                 detailPark.postValue(detailItem)
             }
         })

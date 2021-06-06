@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.zulham.hoopspot.data.remote.response.HoopsEntityItem
 import com.zulham.hoopspot.databinding.FragmentPlaceBinding
 import com.zulham.hoopspot.ui.parking.main.ParkingActivity
-import com.zulham.hoopspot.ui.parking.main.ParkingActivity.Companion.EXTRA_ID
+import com.zulham.hoopspot.ui.parking.main.ParkingActivity.Companion.EXTRA_DATA
 import com.zulham.hoopspot.ui.place.adapter.PlaceAdapter
 import com.zulham.hoopspot.utils.ViewModelFactory
 import kotlinx.coroutines.InternalCoroutinesApi
@@ -53,7 +53,7 @@ class PlaceFragment : Fragment() {
             placeAdapter.setOnItemClickCallback(object : PlaceAdapter.OnItemClickCallback{
                 override fun onItemClicked(hoops: HoopsEntityItem) {
                     val intent = Intent(context, ParkingActivity::class.java)
-                    intent.putExtra(EXTRA_ID, hoops.placeId)
+                    intent.putExtra(EXTRA_DATA, hoops)
                     startActivity(intent)
                 }
 

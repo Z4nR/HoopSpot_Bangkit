@@ -31,9 +31,10 @@ class ParkingDetailActivity : AppCompatActivity() {
         val factory = ViewModelFactory.getInstance(this)
         viewModel = ViewModelProvider(this,factory)[ParkingDetailViewModel::class.java]
 
-        viewModel.setParkingDetail(parkDetail, placeId)
+        viewModel.setParkingDetail(placeId, parkDetail)
         viewModel.getParkingDetail().observe(this, {
-            hoopsDetail(it)
+            val parkings = it.hoopsEntity[0].parking!!
+            hoopsDetail(parkings[0])
         })
 
     }
