@@ -9,12 +9,14 @@ import os
 app = Flask(__name__, template_folder='template')
 
 
+# how to call in route main
 @app.route('/')
 def anyname():
     """Video streaming home page."""
     return render_template("index.html")
 
 
+# this is to read in the other route
 @app.route('/index_parking1')
 def index_1():
     return render_template('index1.html')
@@ -41,12 +43,16 @@ def index_5():
 
 
 z = 0
+# file video
 dir_vid = 'parking 1.mp4'
+# this is koordinat to draw/detected object
 loc_spot1 = 'spot space/spot1.pickle'
 
+# this to load data from format pickle,
 with(open(loc_spot1, 'rb')) as loc:
     x = pickle.load(loc)
 
+# this use to accommodate available spots
 spot_available = np.zeros(len(x))
 
 boxes = []
@@ -54,10 +60,12 @@ for box in x:
     a, b, c, d = box
     boxes += [[int(a / 2), int(b / 2), int(c / 2), int(d / 2)]]
 
+# this to read/load result for training, process training in the file model train.py
 train_model = 'train1.h5'
 model = tf.keras.models.load_model(train_model)
 
 
+# this use predict data based on image parking and model
 def prediction(input_model):
     generate_id = []
 
@@ -68,12 +76,14 @@ def prediction(input_model):
     return generate_id
 
 
+# use to convert data become json
 def convert(a, b):
     zipped = zip(a, b)
     op = dict(zipped)
     return op
 
 
+# this function to load video and predict video used model training
 def park1():
     """Video streaming generator function."""
     global z, spot_available
@@ -85,11 +95,14 @@ def park1():
         # Capture frame-by-frame
         ret, img = cap.read()
         if not ret:
+            # if the data/video does not recover, the image will always be repeated because this prototype used video
+            # not real camera cctv
             cap = cv2.VideoCapture(dir_vid)
             continue
         if ret:
             img = cv2.resize(img, (0, 0), fx=0.5, fy=0.5)
             z += 1
+            # this use to skip frame (10 frame) to predict so that the video runs more normally
             if z % 10 == 0:
                 status = True
 
@@ -102,7 +115,7 @@ def park1():
 
                 spot_available = prediction(img_crop)
                 status = False
-
+            # to convert for data spot_available become json
             json_objs = []
             str_s = ['id', 'value']
             for i in range(len(spot_available)):
@@ -111,13 +124,15 @@ def park1():
                 json_objs += [json_obj]
 
             print('spot avail', spot_available)
+
             for i in range(len(spot_available)):
                 if spot_available[i] == 0:
+                    # use to create rectangle if
                     cv2.rectangle(img, (boxes[i][0], boxes[i][1]),
                                   (boxes[i][0] + boxes[i][2], boxes[i][1] + boxes[i][3]), (0, 255, 0), 3)
-                cv2.putText(img, str(i+1), (boxes[i][0] + 15, boxes[i][1] + 40), cv2.FONT_HERSHEY_SIMPLEX, 1,
+                cv2.putText(img, str(i + 1), (boxes[i][0] + 15, boxes[i][1] + 40), cv2.FONT_HERSHEY_SIMPLEX, 1,
                             (0, 255, 255), 3)
-
+            # this add spot available in the video based on spot available that showed
             cv2.putText(img, 'available spot: {}'.format(len(spot_available) - sum(spot_available)), (50, 510),
                         cv2.FONT_HERSHEY_COMPLEX, 1, (255, 0, 0), 3)
 
@@ -180,7 +195,7 @@ def park2():
                 if spot_available2[i] == 0:
                     cv2.rectangle(img, (boxes2[i][0], boxes2[i][1]),
                                   (boxes2[i][0] + boxes2[i][2], boxes2[i][1] + boxes2[i][3]), (0, 255, 0), 3)
-                cv2.putText(img, str(i+1), (boxes2[i][0] + 15, boxes2[i][1] + 40), cv2.FONT_HERSHEY_SIMPLEX, 1,
+                cv2.putText(img, str(i + 1), (boxes2[i][0] + 15, boxes2[i][1] + 40), cv2.FONT_HERSHEY_SIMPLEX, 1,
                             (0, 255, 255), 3)
 
             cv2.putText(img, 'available spot: {}'.format(len(spot_available2) - sum(spot_available2)), (50, 510),
@@ -233,19 +248,19 @@ def park3():
                 spot_available3 = prediction(img_crop)
                 status = False
 
-            #json_objs = []
-            #str_s = ['id', 'value']
-            #for i in range(len(spot_available3)):
-                #conv = convert(str_s, [i + 1, bool(spot_available3[i])])
-                #json_obj = json.dumps(conv)
-                #json_objs += [json_obj]
+            # json_objs = []
+            # str_s = ['id', 'value']
+            # for i in range(len(spot_available3)):
+            # conv = convert(str_s, [i + 1, bool(spot_available3[i])])
+            # json_obj = json.dumps(conv)
+            # json_objs += [json_obj]
 
             print('spot avail', spot_available3)
             for i in range(len(spot_available3)):
                 if spot_available3[i] == 0:
                     cv2.rectangle(img, (boxes3[i][0], boxes3[i][1]),
                                   (boxes3[i][0] + boxes3[i][2], boxes3[i][1] + boxes3[i][3]), (0, 255, 0), 3)
-                cv2.putText(img, str(i+1), (boxes3[i][0] + 15, boxes3[i][1] + 40), cv2.FONT_HERSHEY_SIMPLEX, 1,
+                cv2.putText(img, str(i + 1), (boxes3[i][0] + 15, boxes3[i][1] + 40), cv2.FONT_HERSHEY_SIMPLEX, 1,
                             (0, 255, 255), 3)
 
             cv2.putText(img, 'available spot: {}'.format(len(spot_available3) - sum(spot_available3)), (50, 510),
@@ -310,7 +325,7 @@ def park4():
                 if spot_available4[i] == 0:
                     cv2.rectangle(img, (boxes4[i][0], boxes4[i][1]),
                                   (boxes4[i][0] + boxes4[i][2], boxes4[i][1] + boxes4[i][3]), (0, 255, 0), 3)
-                cv2.putText(img, str(i+1), (boxes4[i][0] + 15, boxes4[i][1] + 40), cv2.FONT_HERSHEY_SIMPLEX, 1,
+                cv2.putText(img, str(i + 1), (boxes4[i][0] + 15, boxes4[i][1] + 40), cv2.FONT_HERSHEY_SIMPLEX, 1,
                             (0, 255, 255), 3)
 
             cv2.putText(img, 'available spot: {}'.format(len(spot_available4) - sum(spot_available4)), (50, 510),
@@ -347,8 +362,6 @@ def park5():
         if not ret:
             cap = cv2.VideoCapture(dir_vid5)
 
-
-
             continue
         if ret:
             img = cv2.resize(img, (0, 0), fx=0.5, fy=0.5)
@@ -378,7 +391,7 @@ def park5():
                 if spot_available4[i] == 0:
                     cv2.rectangle(img, (boxes5[i][0], boxes5[i][1]),
                                   (boxes5[i][0] + boxes5[i][2], boxes4[i][1] + boxes5[i][3]), (0, 255, 0), 3)
-                cv2.putText(img, str(i+1), (boxes5[i][0] + 15, boxes5[i][1] + 40), cv2.FONT_HERSHEY_SIMPLEX, 1,
+                cv2.putText(img, str(i + 1), (boxes5[i][0] + 15, boxes5[i][1] + 40), cv2.FONT_HERSHEY_SIMPLEX, 1,
                             (0, 255, 255), 3)
 
             cv2.putText(img, 'available spot: {}'.format(len(spot_available5) - sum(spot_available5)), (50, 510),
@@ -388,11 +401,11 @@ def park5():
             yield (b'--frame\r\n'b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
 
 
+# used to call video so that can be display in web
 @app.route('/video_parking1')
 def video_feed():
     """Video streaming route. Put this in the src attribute of an img tag."""
-    return Response(park1(),
-                    mimetype='multipart/x-mixed-replace; boundary=frame')
+    return Response(park1(), mimetype='multipart/x-mixed-replace; boundary=frame')
 
 
 @app.route('/video_parking2')
@@ -408,7 +421,7 @@ def video_parking3():
 @app.route('/video_parking4')
 def video_parking4():
     """Video streaming route. Put this in the src attribute of an img tag."""
-    return Response(park4(),mimetype='multipart/x-mixed-replace; boundary=frame')
+    return Response(park4(), mimetype='multipart/x-mixed-replace; boundary=frame')
 
 
 @app.route('/video_parking5')
