@@ -42,11 +42,13 @@ class ParkingDetailActivity : AppCompatActivity() {
     private fun hoopsDetail(detail: ParkingItem){
         binding.tvParkName.text = detail.parkName
         binding.tvParkAddress.text = detail.parkAddress
-        //webView(detail.)
+        detail.parkVideo?.let { webView(it) }
     }
 
     @SuppressLint("SetJavaScriptEnabled")
     private fun webView(url : String){
+        val urlVideo = "https://capstone-api-firebase-ptzf4vjc4a-et.a.run.app"
+
         binding.webViewCamera.settings.javaScriptEnabled = true
 
         binding.webViewCamera.webViewClient = object : WebViewClient() {
@@ -63,7 +65,7 @@ class ParkingDetailActivity : AppCompatActivity() {
             }
         }
 
-        binding.webViewCamera.loadUrl(url)
+        binding.webViewCamera.loadUrl(urlVideo + url)
     }
 
     companion object {

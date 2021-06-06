@@ -63,6 +63,9 @@ data class ParkingItem(
 	val parkAddress: String? = null,
 
 	@field:SerializedName("park_name")
-	val parkName: String? = null
+	val parkName: String? = null,
+
+	@field:SerializedName("park_video")
+	val parkVideo: String? = null
 
 ) : Parcelable
