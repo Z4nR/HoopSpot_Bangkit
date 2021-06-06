@@ -58,7 +58,7 @@ module.exports = {
                     });
                 });
             connection.release();
-        })
+        });
     },
 
     /* Ambil data hoops_entity */
@@ -78,7 +78,7 @@ module.exports = {
                     });
                 });
             connection.release();
-        })
+        });
     },
     
     /* Ambil data parking */
@@ -98,7 +98,7 @@ module.exports = {
                     });
                 });
             connection.release();
-        })
+        });
     },
 
     /* Ambil data hoops_entity berdasarkan ID */
@@ -155,14 +155,15 @@ module.exports = {
                     });
                 });
             connection.release();
-        })
+        });
     },
 
     /* Ambil data parking berdasarkan ID */
     getParkingID(req, res) {
         let place_id = req.params.place_id;
         let park_id = req.params.park_id;
-        pool.getConnection(function (err, connection) {
+        pool.getConnection(
+            function (err, connection) {
             if (err) throw err;
             connection.query(
                 `
@@ -171,14 +172,34 @@ module.exports = {
                 , [place_id, park_id],
                 function (error, results) {
                     if (error) throw error;
+                    let data = [];
+                    let currnetPlaceId = 0;
+                    let currentIndex = -1;
+                    results.map((value, index) => {
+                        if (currnetPlaceId != value.place_id) {
+                            currentIndex++;
+                            data[currentIndex] = {
+                                'place_id': value.place_id
+                            }
+                            data[currentIndex]['parking'] = [];
+                            currnetPlaceId = value.place_id;
+                        }
+                        data[currentIndex]['parking'].push({
+                            'park_id': value.park_id,
+                            'park_name': value.park_name,
+                            'park_img': value.park_img,
+                            'park_address': value.park_address,
+                            'park_layout': value.park_layout /* img = url */
+                        });
+                    });
                     res.send({
                         success: true,
                         message: 'Berhasil ambil data!',
-                        parking: results
+                        hoops_entity: data
                     });
                 });
             connection.release();
-        })
+        });
     },
 
     /* Simpan data hoops_entity */
@@ -203,7 +224,7 @@ module.exports = {
                     });
                 });
             connection.release();
-        })
+        });
     },
 
     /* Simpan data parking */
@@ -230,7 +251,7 @@ module.exports = {
                     });
                 });
             connection.release();
-        })
+        });
     },
 
     /* Update data hoops_entity */
@@ -256,7 +277,7 @@ module.exports = {
                     });
                 });
             connection.release();
-        })
+        });
     },
 
     /* Update data parking */
@@ -283,7 +304,7 @@ module.exports = {
                     });
                 });
             connection.release();
-        })
+        });
     },
 
     /* Delete data hoops_entity */
@@ -304,7 +325,7 @@ module.exports = {
                     });
                 });
             connection.release();
-        })
+        });
     },
 
     /* Delete data parking */
@@ -325,7 +346,7 @@ module.exports = {
                     });
                 });
             connection.release();
-        })
+        });
     },
     
     /* Delete all data --Development Interest
