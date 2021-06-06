@@ -22,7 +22,8 @@ module.exports = {
                     p.park_name,
                     p.park_img,
                     p.park_address,
-                    p.park_layout
+                    p.park_layout,
+                    p.park_video
                 from hoops_entity h
                 inner join parking p on p.place_id = h.place_id;
                 `
@@ -48,7 +49,8 @@ module.exports = {
                             'park_name': value.park_name,
                             'park_img': value.park_img,
                             'park_address': value.park_address,
-                            'park_layout': value.park_layout /* img = url */
+                            'park_layout': value.park_layout, /* img = url */
+                            'park_video': value.park_video
                         });
                     });
                     res.send({
@@ -117,7 +119,8 @@ module.exports = {
                     p.park_name,
                     p.park_img,
                     p.park_address,
-                    p.park_layout
+                    p.park_layout,
+                    p.park_video
                 from hoops_entity h
                 inner join parking p on p.place_id = h.place_id
                 where h.place_id = ?;
@@ -145,7 +148,8 @@ module.exports = {
                             'park_name': value.park_name,
                             'park_img': value.park_img,
                             'park_address': value.park_address,
-                            'park_layout': value.park_layout /* img = url */
+                            'park_layout': value.park_layout, /* img = url */
+                            'park_video': value.park_video
                         });
                     });
                     res.send({
@@ -189,7 +193,8 @@ module.exports = {
                             'park_name': value.park_name,
                             'park_img': value.park_img,
                             'park_address': value.park_address,
-                            'park_layout': value.park_layout /* img = url */
+                            'park_layout': value.park_layout, /* img = url */
+                            'park_video': value.park_video
                         });
                     });
                     res.send({
@@ -233,7 +238,8 @@ module.exports = {
             park_name: req.body.park_name,
             park_img: req.body.park_img,
             park_address: req.body.park_address,
-            park_layout: req.body.parking_layout,
+            park_layout: req.body.park_layout,
+            park_video: req.body.park_video,
             place_id: req.body.place_id
         }
         pool.getConnection(function (err, connection) {
@@ -286,7 +292,8 @@ module.exports = {
             park_name: req.body.park_name,
             park_img: req.body.park_img,
             park_address: req.body.park_address,
-            park_layout: req.body.parking_layout
+            park_layout: req.body.park_layout,
+            park_video: req.body.park_video
         }
         let park_id = req.params.park_id;
         pool.getConnection(function (err, connection) {
