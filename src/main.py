@@ -44,7 +44,7 @@ def index_5():
 
 z = 0
 # file video
-dir_vid = 'parking 1.mp4'
+dir_vid = 'video/parking 1.mp4'
 # this is koordinat to draw/detected object
 loc_spot1 = 'spot space/spot1.pickle'
 
@@ -140,7 +140,7 @@ def park1():
             yield (b'--frame\r\n'b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
 
 
-dir_vid2 = 'parking 2.mp4'
+dir_vid2 = 'video/parking 2.mp4'
 loc_spot2 = 'spot space/spot2.pickle'
 
 with(open(loc_spot2, 'rb')) as loc:
@@ -205,7 +205,7 @@ def park2():
             yield (b'--frame\r\n'b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
 
 
-dir_vid3 = 'parking 3.mp4'
+dir_vid3 = 'video/parking 3.mp4'
 loc_spot3 = 'spot space/spot3.pickle'
 
 with(open(loc_spot3, 'rb')) as loc:
@@ -270,7 +270,7 @@ def park3():
             yield (b'--frame\r\n'b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
 
 
-dir_vid4 = 'parking 4.mp4'
+dir_vid4 = 'video/parking 4.mp4'
 loc_spot4 = 'spot space/spot4.pickle'
 
 with(open(loc_spot4, 'rb')) as loc:
@@ -335,7 +335,7 @@ def park4():
             yield (b'--frame\r\n'b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
 
 
-dir_vid5 = 'parking 5.mp4'
+dir_vid5 = 'video/parking 5.mp4'
 loc_spot5 = 'spot space/spot5.pickle'
 
 with(open(loc_spot5, 'rb')) as loc:
