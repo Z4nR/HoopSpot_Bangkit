@@ -160,14 +160,15 @@ module.exports = {
 
     /* Ambil data parking berdasarkan ID */
     getParkingID(req, res) {
+        let place_id = req.params.place_id;
         let park_id = req.params.park_id;
         pool.getConnection(function (err, connection) {
             if (err) throw err;
             connection.query(
                 `
-                SELECT * FROM parking WHERE park_id = ?;
+                SELECT * FROM parking WHERE place_id = ? AND park_id = ?;
                 `
-                , [park_id],
+                , [place_id, park_id],
                 function (error, results) {
                     if (error) throw error;
                     res.send({
@@ -211,7 +212,8 @@ module.exports = {
             park_name: req.body.park_name,
             park_img: req.body.park_img,
             park_address: req.body.park_address,
-            park_layout: req.body.parking_layout
+            park_layout: req.body.parking_layout,
+            place_id: req.body.place_id
         }
         pool.getConnection(function (err, connection) {
             if (err) throw err;
@@ -326,7 +328,7 @@ module.exports = {
         })
     },
     
-    /* // Delete all data --Development Interest
+    /* Delete all data --Development Interest
     deleteAll(req,res){
         pool.getConnection(function(err, connection) {
             if (err) throw err;
