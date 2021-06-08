@@ -6,6 +6,23 @@ import numpy as np
 import json
 import os
 
+import pyrebase
+
+firebaseConfig = {
+  'apiKey': "AIzaSyBqsfZ2M9fkEJSwQ052O7P22mD3U2fV0dk",
+  'authDomain': "b21-cap0192.firebaseapp.com",
+  'databaseURL': "https://b21-cap0192-default-rtdb.asia-southeast1.firebasedatabase.app",
+  'projectId': "b21-cap0192",
+  'storageBucket': "b21-cap0192.appspot.com",
+  'messagingSenderId': "838300320197",
+  'appId': "1:838300320197:web:0b5cf93bbb4a10d0584bac",
+  'measurementId': "G-H2KR6ND1XP"
+}
+
+firebase = pyrebase.initialize_app(firebaseConfig)
+
+db = firebase.database()
+
 app = Flask(__name__, template_folder='template')
 
 
@@ -14,6 +31,12 @@ app = Flask(__name__, template_folder='template')
 def anyname():
     """Video streaming home page."""
     return render_template("index.html")
+
+
+# this is to read in the other route
+@app.route('/index_parking1')
+def index_1():
+    return render_template('index1.html')
 
 
 @app.route('/index_parking2')
@@ -38,7 +61,7 @@ def index_5():
 
 z = 0
 # file video
-dir_vid = 'video/parking 1.mp4'
+dir_vid = 'parking 1.mp4'
 # this is koordinat to draw/detected object
 loc_spot1 = 'spot space/spot1.pickle'
 
@@ -80,7 +103,7 @@ def convert(a, b):
 # this function to load video and predict video used model training
 def park1():
     """Video streaming generator function."""
-    global z, spot_available
+    global z, spot_available, db
 
     status = None
     cap = cv2.VideoCapture(dir_vid)
@@ -109,6 +132,8 @@ def park1():
 
                 spot_available = prediction(img_crop)
                 status = False
+
+            spot = (len(spot_available) - sum(spot_available))
             # to convert for data spot_available become json
             json_objs = []
             str_s = ['id', 'value']
@@ -117,6 +142,7 @@ def park1():
                 json_obj = json.dumps(conv)
                 json_objs += [json_obj]
 
+            db.child('parking').child('parking_1').update({'spot_available': int(spot), 'layout': json_objs})
             print('spot avail', spot_available)
 
             for i in range(len(spot_available)):
@@ -134,7 +160,7 @@ def park1():
             yield (b'--frame\r\n'b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
 
 
-dir_vid2 = 'video/parking 2.mp4'
+dir_vid2 = 'parking 2.mp4'
 loc_spot2 = 'spot space/spot2.pickle'
 
 with(open(loc_spot2, 'rb')) as loc:
@@ -184,6 +210,8 @@ def park2():
                 json_obj = json.dumps(conv)
                 json_objs += [json_obj]
 
+            spot = (len(spot_available2) - sum(spot_available2))
+            db.child('parking').child('parking_2').update({'spot_available': int(spot), 'layout': json_objs})
             print('spot avail', spot_available2)
             for i in range(len(spot_available2)):
                 if spot_available2[i] == 0:
@@ -199,7 +227,7 @@ def park2():
             yield (b'--frame\r\n'b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
 
 
-dir_vid3 = 'video/parking 3.mp4'
+dir_vid3 = 'parking 3.mp4'
 loc_spot3 = 'spot space/spot3.pickle'
 
 with(open(loc_spot3, 'rb')) as loc:
@@ -242,12 +270,15 @@ def park3():
                 spot_available3 = prediction(img_crop)
                 status = False
 
-            # json_objs = []
-            # str_s = ['id', 'value']
-            # for i in range(len(spot_available3)):
-            # conv = convert(str_s, [i + 1, bool(spot_available3[i])])
-            # json_obj = json.dumps(conv)
-            # json_objs += [json_obj]
+            json_objs = []
+            str_s = ['id', 'value']
+            for i in range(len(spot_available3)):
+                conv = convert(str_s, [i + 1, bool(spot_available3[i])])
+                json_obj = json.dumps(conv)
+                json_objs += [json_obj]
+
+            spot = (len(spot_available3) - sum(spot_available3))
+            db.child('parking').child('parking_3').update({'spot_available': int(spot), 'layout': json_objs})
 
             print('spot avail', spot_available3)
             for i in range(len(spot_available3)):
@@ -264,7 +295,7 @@ def park3():
             yield (b'--frame\r\n'b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
 
 
-dir_vid4 = 'video/parking 4.mp4'
+dir_vid4 = 'parking 4.mp4'
 loc_spot4 = 'spot space/spot4.pickle'
 
 with(open(loc_spot4, 'rb')) as loc:
@@ -314,6 +345,8 @@ def park4():
                 json_obj = json.dumps(conv)
                 json_objs += [json_obj]
 
+            spot = (len(spot_available4) - sum(spot_available4))
+            db.child('parking').child('parking_4').update({'spot_available': int(spot), 'layout': json_objs})
             print('spot avail', spot_available4)
             for i in range(len(spot_available4)):
                 if spot_available4[i] == 0:
@@ -329,7 +362,7 @@ def park4():
             yield (b'--frame\r\n'b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
 
 
-dir_vid5 = 'video/parking 5.mp4'
+dir_vid5 = 'parking 5.mp4'
 loc_spot5 = 'spot space/spot5.pickle'
 
 with(open(loc_spot5, 'rb')) as loc:
@@ -380,9 +413,14 @@ def park5():
                 json_obj = json.dumps(conv)
                 json_objs += [json_obj]
 
+            spot = (len(spot_available5) - sum(spot_available5))
+            db.child('parking').child('parking_5').update({'spot_available': int(spot), 'layout': json_objs})
+
             print('spot avail', spot_available5)
             for i in range(len(spot_available5)):
                 if spot_available5[i] == 0:
+                    #kernel = np.ones((5,5), 'uint8')
+                    #dilate_img = (cv2.dilate(img, kernel, iterations=1))
                     cv2.rectangle(img, (boxes5[i][0], boxes5[i][1]),
                                   (boxes5[i][0] + boxes5[i][2], boxes4[i][1] + boxes5[i][3]), (0, 255, 0), 3)
                 cv2.putText(img, str(i + 1), (boxes5[i][0] + 15, boxes5[i][1] + 40), cv2.FONT_HERSHEY_SIMPLEX, 1,
