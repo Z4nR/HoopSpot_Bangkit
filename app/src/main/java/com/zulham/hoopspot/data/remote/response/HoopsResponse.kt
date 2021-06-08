@@ -69,3 +69,14 @@ data class ParkingItem(
 	val parkVideo: String? = null
 
 ) : Parcelable
+
+@Parcelize
+data class ParkingArray(
+
+	val idArray: Int? = null,
+
+	val valueArray: Boolean? = null,
+
+	val position: String? = "UP"
+
+) : Parcelable

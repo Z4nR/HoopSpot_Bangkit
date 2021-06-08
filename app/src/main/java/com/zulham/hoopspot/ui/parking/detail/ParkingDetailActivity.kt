@@ -8,8 +8,12 @@ import android.webkit.WebViewClient
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.zulham.hoopspot.data.remote.response.ParkingArray
 import com.zulham.hoopspot.data.remote.response.ParkingItem
 import com.zulham.hoopspot.databinding.ActivityParkingDetailBinding
+import com.zulham.hoopspot.ui.parking.adapter.ParkingLayoutAdapter
 import com.zulham.hoopspot.utils.ViewModelFactory
 import kotlinx.coroutines.InternalCoroutinesApi
 
@@ -28,6 +32,8 @@ class ParkingDetailActivity : AppCompatActivity() {
         val parkDetail = intent.getIntExtra(EXTRA_PARKING, 0)
         val placeId = intent.getIntExtra(EXTRA_ID, 0)
 
+        backHome()
+
         val factory = ViewModelFactory.getInstance(this)
         viewModel = ViewModelProvider(this,factory)[ParkingDetailViewModel::class.java]
 
@@ -35,14 +41,38 @@ class ParkingDetailActivity : AppCompatActivity() {
         viewModel.getParkingDetail().observe(this, {
             val parkings = it.hoopsEntity[0].parking!!
             hoopsDetail(parkings[0])
+            viewModel.getParkArray(it.hoopsEntity[0].parking!![0].parkId!!)
+        })
+        viewModel.getAvailableSpot().observe(this, {
+            binding.availableSpot.text = it.toString()
+        })
+        viewModel.getParkList().observe(this, {
+            parkArray(it)
         })
 
+    }
+
+    private fun backHome() {
+        supportActionBar?.title = "Detail Parkir Area"
+        supportActionBar?.setDisplayHomeAsUpEnabled(false)
     }
 
     private fun hoopsDetail(detail: ParkingItem){
         binding.tvParkName.text = detail.parkName
         binding.tvParkAddress.text = detail.parkAddress
         detail.parkVideo?.let { webView(it) }
+    }
+
+    private fun parkArray(parkingArray : List<ParkingArray>){
+        binding.rvParkArray.apply {
+            val array = ParkingLayoutAdapter(parkingArray)
+
+            adapter =  array
+
+            setHasFixedSize(true)
+
+            layoutManager = GridLayoutManager(context, 2, RecyclerView.HORIZONTAL, false)
+        }
     }
 
     @SuppressLint("SetJavaScriptEnabled")
@@ -53,7 +83,7 @@ class ParkingDetailActivity : AppCompatActivity() {
 
         binding.webViewCamera.webViewClient = object : WebViewClient() {
             override fun onPageFinished(view: WebView, url: String) {
-                view.loadUrl("javascript:alert('Web Berhasil di Load')")
+                view.loadUrl("javascript:alert('Load Success, Video Available Now')")
             }
         }
 

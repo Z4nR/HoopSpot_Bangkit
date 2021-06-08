@@ -32,6 +32,8 @@ class ParkingActivity : AppCompatActivity() {
 
         detailPlace = intent.getParcelableExtra<HoopsEntityItem>(EXTRA_DATA)!!
 
+        backHome()
+
         val factory = ViewModelFactory.getInstance(this)
         val parkingViewModel = ViewModelProvider(this, factory)[ParkingViewModel::class.java]
 
@@ -40,6 +42,11 @@ class ParkingActivity : AppCompatActivity() {
             recyclerV(it[0].parking!!)
         })
 
+    }
+
+    private fun backHome() {
+        supportActionBar?.title = "Parkir List"
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
 
     private fun recyclerV(park: List<ParkingItem>) {

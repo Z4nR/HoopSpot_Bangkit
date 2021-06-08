@@ -5,10 +5,28 @@
     android:layout_height="match_parent"
     tools:context=".ui.parking.main.ParkingActivity">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvParking"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:listitem="@layout/list_parking"/>
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tvParkingName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="8dp"
+            android:fontFamily="@font/roboto_light"
+            android:text="@string/available_parking_area_for_this_place"
+            android:textColor="@color/black"
+            android:textSize="16sp" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvParking"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:listitem="@layout/list_parking" />
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

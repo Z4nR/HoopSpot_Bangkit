@@ -48,7 +48,7 @@ class ParkingAdapter(private val hoops: List<ParkingItem>): RecyclerView.Adapter
     }
 
     override fun onBindViewHolder(holder: PlaceViewHolder, position: Int) {
-        hoops.get(position).let { holder.bind(it) }
+        hoops[position].let { holder.bind(it) }
     }
 
     override fun getItemCount(): Int = hoops.size
