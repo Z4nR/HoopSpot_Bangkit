@@ -16,12 +16,6 @@ def anyname():
     return render_template("index.html")
 
 
-# this is to read in the other route
-@app.route('/index_parking1')
-def index_1():
-    return render_template('index1.html')
-
-
 @app.route('/index_parking2')
 def index_2():
     return render_template('index2.html')
@@ -388,7 +382,7 @@ def park5():
 
             print('spot avail', spot_available5)
             for i in range(len(spot_available5)):
-                if spot_available4[i] == 0:
+                if spot_available5[i] == 0:
                     cv2.rectangle(img, (boxes5[i][0], boxes5[i][1]),
                                   (boxes5[i][0] + boxes5[i][2], boxes4[i][1] + boxes5[i][3]), (0, 255, 0), 3)
                 cv2.putText(img, str(i + 1), (boxes5[i][0] + 15, boxes5[i][1] + 40), cv2.FONT_HERSHEY_SIMPLEX, 1,
