@@ -8,6 +8,7 @@ The preprocessing folder contains the files before processing in the web use fla
 - `./src/preprocessing/model_train.ipynb` then the data will be trained using CNN with 3 layers, then saved as train1.h5 (this data will be used in the detection system)
 # 2. Then it is necessary to run a detection system because the system is based online, the Flask library is used as a link so that it can be accessed on the web
 - `./src/main.py` as detection by using openCv and tensorflow as detector
+![alt text](https://github.com/Z4nR/HoopSpot_Bangkit/blob/machine-learning/src/image%20readme/img%20parking%201.PNG)
 - `./src/video/ ` this video folder contains 5 parking prototype videos 
 
 # train1.h5 this is a training_model
