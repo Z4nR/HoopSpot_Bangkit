@@ -9,3 +9,5 @@ The preprocessing folder contains the files before processing in the web use fla
 # 2. Then it is necessary to run a detection system because the system is based online, the Flask library is used as a link so that it can be accessed on the web
 - `./src/main.py` as detection by using openCv and tensorflow as detector
 - `./src/video/ ` this video folder contains 5 parking prototype videos 
+
+#train1.h5 this is a training_model
