@@ -13,4 +13,5 @@
     <string name="available_parking_area_for_this_place">Available Parking Area For This Place :</string>
     <string name="image_parkir_list">Image parkir list</string>
     <string name="spot">Spot</string>
+    <string name="availableText">Available Spot :</string>
 </resources>

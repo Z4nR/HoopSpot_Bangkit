@@ -2,6 +2,7 @@ package com.zulham.hoopspot.ui.parking.main
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -32,6 +33,8 @@ class ParkingActivity : AppCompatActivity() {
 
         detailPlace = intent.getParcelableExtra<HoopsEntityItem>(EXTRA_DATA)!!
 
+        showLoading(true)
+
         backHome()
 
         val factory = ViewModelFactory.getInstance(this)
@@ -39,9 +42,18 @@ class ParkingActivity : AppCompatActivity() {
 
         detailPlace.let{ parkingViewModel.setPlaceDetail(it.placeId!!) }
         parkingViewModel.getParkList().observe(this, {
+            showLoading(false)
             recyclerV(it[0].parking!!)
         })
 
+    }
+
+    private fun showLoading(state: Boolean) {
+        if (state){
+            bindingParking.progressBarParking.visibility = View.VISIBLE
+        } else {
+            bindingParking.progressBarParking.visibility = View.GONE
+        }
     }
 
     private fun backHome() {

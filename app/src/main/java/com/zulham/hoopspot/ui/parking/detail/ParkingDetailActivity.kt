@@ -2,6 +2,7 @@ package com.zulham.hoopspot.ui.parking.detail
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.view.View
 import android.webkit.WebChromeClient
 import android.webkit.WebView
 import android.webkit.WebViewClient
@@ -32,6 +33,8 @@ class ParkingDetailActivity : AppCompatActivity() {
         val parkDetail = intent.getIntExtra(EXTRA_PARKING, 0)
         val placeId = intent.getIntExtra(EXTRA_ID, 0)
 
+        showLoading(true)
+
         backHome()
 
         val factory = ViewModelFactory.getInstance(this)
@@ -39,6 +42,7 @@ class ParkingDetailActivity : AppCompatActivity() {
 
         viewModel.setParkingDetail(placeId, parkDetail)
         viewModel.getParkingDetail().observe(this, {
+            showLoading(false)
             val parkings = it.hoopsEntity[0].parking!!
             hoopsDetail(parkings[0])
             viewModel.getParkArray(it.hoopsEntity[0].parking!![0].parkId!!)
@@ -50,6 +54,14 @@ class ParkingDetailActivity : AppCompatActivity() {
             parkArray(it)
         })
 
+    }
+
+    private fun showLoading(state: Boolean) {
+        if (state){
+            binding.progressBarDetail.visibility = View.VISIBLE
+        } else {
+            binding.progressBarDetail.visibility = View.GONE
+        }
     }
 
     private fun backHome() {

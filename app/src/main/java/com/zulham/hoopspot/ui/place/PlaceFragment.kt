@@ -34,14 +34,25 @@ class PlaceFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        showLoading(true)
+
         val factory = ViewModelFactory.getInstance(requireContext())
         val placeViewModel = ViewModelProvider(this, factory)[PlaceViewModel::class.java]
 
         placeViewModel.setData()
         placeViewModel.getData().observe(viewLifecycleOwner, {
+            showLoading(false)
             recyclerV(it)
         })
 
+    }
+
+    private fun showLoading(state: Boolean) {
+        if (state){
+            binding.progressBarPlace.visibility = View.VISIBLE
+        } else {
+            binding.progressBarPlace.visibility = View.GONE
+        }
     }
 
     private fun recyclerV(place: List<HoopsEntityItem>) {
@@ -62,5 +73,7 @@ class PlaceFragment : Fragment() {
             layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
         }
     }
+
+
 
 }
