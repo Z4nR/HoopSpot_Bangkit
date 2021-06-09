@@ -1,4 +1,4 @@
-package com.zulham.hoopspot.ui.parking.adapter
+package com.zulham.hoopspot.ui.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

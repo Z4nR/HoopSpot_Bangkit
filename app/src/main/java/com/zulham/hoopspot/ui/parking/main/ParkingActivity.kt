@@ -11,7 +11,7 @@ import com.zulham.hoopspot.R
 import com.zulham.hoopspot.data.remote.response.HoopsEntityItem
 import com.zulham.hoopspot.data.remote.response.ParkingItem
 import com.zulham.hoopspot.databinding.ActivityParkingBinding
-import com.zulham.hoopspot.ui.parking.adapter.ParkingAdapter
+import com.zulham.hoopspot.ui.adapter.ParkingAdapter
 import com.zulham.hoopspot.ui.parking.detail.ParkingDetailActivity
 import com.zulham.hoopspot.ui.parking.detail.ParkingDetailActivity.Companion.EXTRA_ID
 import com.zulham.hoopspot.ui.parking.detail.ParkingDetailActivity.Companion.EXTRA_PARKING

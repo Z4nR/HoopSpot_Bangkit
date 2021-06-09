@@ -1,4 +1,4 @@
-package com.zulham.hoopspot.ui.parking.adapter
+package com.zulham.hoopspot.ui.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -6,10 +6,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.zulham.hoopspot.R
-import com.zulham.hoopspot.data.remote.response.ParkingItem
-import com.zulham.hoopspot.databinding.ListParkingBinding
+import com.zulham.hoopspot.data.remote.response.HoopsEntityItem
+import com.zulham.hoopspot.databinding.ListPlaceBinding
 
-class ParkingAdapter(private val hoops: List<ParkingItem>): RecyclerView.Adapter<ParkingAdapter.PlaceViewHolder>() {
+class PlaceAdapter(private val hoops: List<HoopsEntityItem>): RecyclerView.Adapter<PlaceAdapter.PlaceViewHolder>() {
 
     private var onItemClickCallback: OnItemClickCallback? = null
 
@@ -18,22 +18,22 @@ class ParkingAdapter(private val hoops: List<ParkingItem>): RecyclerView.Adapter
     }
 
     interface OnItemClickCallback {
-        fun onItemClicked(hoops : ParkingItem)
+        fun onItemClicked(hoops : HoopsEntityItem)
     }
 
-    inner class PlaceViewHolder(private val binding: ListParkingBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class PlaceViewHolder(private val binding: ListPlaceBinding) : RecyclerView.ViewHolder(binding.root) {
         private val w = 1000
         private val h = 1000
 
-        fun bind(hoopsView : ParkingItem){
+        fun bind(hoopsView : HoopsEntityItem){
             Glide.with(binding.root)
-                .load(hoopsView.parkImg)
+                .load(hoopsView.placeImg)
                 .error(R.drawable.ic_launcher_foreground)
                 .apply(RequestOptions().override(w, h))
                 .into(binding.imgPlace)
 
-            binding.tvParkName.text = hoopsView.parkName
-            binding.tvItemDate.text = hoopsView.parkAddress
+            binding.tvPlaceName.text = hoopsView.placeName
+            binding.tvItemDate.text = hoopsView.placeAddress
 
             itemView.setOnClickListener {
                 onItemClickCallback?.onItemClicked(hoopsView)
@@ -43,12 +43,12 @@ class ParkingAdapter(private val hoops: List<ParkingItem>): RecyclerView.Adapter
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PlaceViewHolder {
-        val binding = ListParkingBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding = ListPlaceBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return PlaceViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: PlaceViewHolder, position: Int) {
-        hoops[position].let { holder.bind(it) }
+        holder.bind(hoops[position])
     }
 
     override fun getItemCount(): Int = hoops.size

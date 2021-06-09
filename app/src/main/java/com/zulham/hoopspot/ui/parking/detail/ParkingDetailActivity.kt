@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.zulham.hoopspot.data.remote.response.ParkingArray
 import com.zulham.hoopspot.data.remote.response.ParkingItem
 import com.zulham.hoopspot.databinding.ActivityParkingDetailBinding
-import com.zulham.hoopspot.ui.parking.adapter.ParkingLayoutAdapter
+import com.zulham.hoopspot.ui.adapter.ParkingLayoutAdapter
 import com.zulham.hoopspot.utils.ViewModelFactory
 import kotlinx.coroutines.InternalCoroutinesApi
 
