@@ -11,9 +11,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.zulham.hoopspot.data.remote.response.HoopsEntityItem
 import com.zulham.hoopspot.databinding.FragmentPlaceBinding
+import com.zulham.hoopspot.ui.adapter.PlaceAdapter
 import com.zulham.hoopspot.ui.parking.main.ParkingActivity
 import com.zulham.hoopspot.ui.parking.main.ParkingActivity.Companion.EXTRA_DATA
-import com.zulham.hoopspot.ui.place.adapter.PlaceAdapter
 import com.zulham.hoopspot.utils.ViewModelFactory
 import kotlinx.coroutines.InternalCoroutinesApi
 

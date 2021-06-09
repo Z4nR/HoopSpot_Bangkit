@@ -11,11 +11,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.HoopSpotWithActionBar">
-        <activity android:name=".ui.parking.main.ParkingActivity"
-            android:parentActivityName=".ui.place.PlaceActivity"/>
-        <activity android:name=".ui.parking.detail.ParkingDetailActivity"
-            android:parentActivityName=".ui.parking.main.ParkingActivity"/>
-        <activity android:name=".ui.place.PlaceActivity"
+        <activity android:name=".ui.splash.SplashActivity"
             android:theme="@style/Theme.HoopSpot">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -23,6 +19,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".ui.parking.main.ParkingActivity"
+            android:parentActivityName=".ui.place.PlaceActivity" />
+        <activity
+            android:name=".ui.parking.detail.ParkingDetailActivity"
+            android:parentActivityName=".ui.parking.main.ParkingActivity" />
+        <activity
+            android:name=".ui.place.PlaceActivity"
+            android:theme="@style/Theme.HoopSpot"/>
 
         <meta-data
             android:name="preloaded_fonts"

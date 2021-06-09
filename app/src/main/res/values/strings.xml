@@ -14,4 +14,6 @@
     <string name="image_parkir_list">Image parkir list</string>
     <string name="spot">Spot</string>
     <string name="availableText">Available Spot :</string>
+    <string name="splash_image">splash image</string>
+    <string name="image_title">Image Title</string>
 </resources>
