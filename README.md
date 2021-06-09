@@ -1,5 +1,5 @@
 # NOTE : 
-# One User is only given 1 Field access to Realtime Database data in each Runtime video, so there will be problems, namely data collisions which result in no synchronization between Realtime Layout and Runtime Video ( Satu User hanya diberikan akses 1Field ke data Realtime Database di setiap video Runtime, sehingga akan terjadi masalah yaitu tabrakan data yang mengakibatkan tidak adanya sinkronisasi antara Realtime Layout dan Video Runtime )
+One User is only given 1 Field access to Realtime Database data in each Runtime video, so there will be problems, namely data collisions which result in no synchronization between Realtime Layout and Runtime Video ( Satu User hanya diberikan akses 1Field ke data Realtime Database di setiap video Runtime, sehingga akan terjadi masalah yaitu tabrakan data yang mengakibatkan tidak adanya sinkronisasi antara Realtime Layout dan Video Runtime )
 
 # Screenshot Aplikasi
 
