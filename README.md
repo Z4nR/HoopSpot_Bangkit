@@ -1,7 +1,7 @@
 # Step to run the API
 1. Install [Node.js](https://nodejs.org/en/)
 2. Clone this repository branch of cloud-computing using command `git clone -b cloud-computing <remote-repo>`
-3. Create database capstone, you can read the `capstone.sql` file and copy the command in Mysql DBMS
+3. Create database capstone, you can read the `capstone.sql` file and copy the command in MySQL DBMS
 4. Setting your local database config in `./src/configs/database.js`
 5. Install all dependencies or modules that needed in this API `npm install`
 6. Type the command to run the server of Node.js `npm run start`
