@@ -1,5 +1,5 @@
 const capstone = require('./controller-capstone');
 
-module.exports ={
-	capstone
+module.exports = {
+  capstone,
 };

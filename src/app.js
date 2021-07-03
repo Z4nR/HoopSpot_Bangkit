@@ -1,14 +1,14 @@
-const express = require("express");
-const mysqll = require("mysql2");
+/* eslint-disable no-console */
+const express = require('express');
 const appRoute = require('./routes/route-capstone');
-//const dotenv = require("dotenv");
+// const dotenv = require("dotenv");
 
 const app = express();
 const port = process.env.PORT || 8080;
 
 app.use('/', appRoute);
-app.listen(port, ()=>{
-    console.log(`Rest API listening on port ${port}`);
+app.listen(port, () => {
+  console.log(`Rest API listening on port ${port}`);
 });
 
 /* app.use(express.json()); --Development Interests--
